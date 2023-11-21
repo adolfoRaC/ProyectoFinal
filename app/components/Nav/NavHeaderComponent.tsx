@@ -39,17 +39,17 @@ const NavHeaderComponent = () => {
                         <h1 className="logo"><Link href="/">Tec Coffee</Link></h1>
                     </div>
 
-                        <Link  style={{ textDecoration: 'none' }} href='./Carrito'>
-                    <div className="container-user">
-                        <span className="material-icons">
-                            shopping_cart
-                        </span>
-                        <div className="content-shopping-cart">
-                            <span className="text">Carrito</span>
-                            <span className="number">(0)</span>
+                    <Link style={{ textDecoration: 'none' }} href='./Carrito'>
+                        <div className="container-user">
+                            <span className="material-icons">
+                                shopping_cart
+                            </span>
+                            <div className="content-shopping-cart">
+                                <span className="text">Carrito</span>
+                                <span className="number">(0)</span>
+                            </div>
                         </div>
-                    </div>
-                        </Link>
+                    </Link>
                 </div>
             </div>
 
@@ -61,13 +61,12 @@ const NavHeaderComponent = () => {
                 </div>
                 <div className={`header-center ${isMenuOpen2 ? 'show' : ''}`}>
                     <ul>
-                        <li><Link href="/">
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    house
-                                </span>
-                            </div>
-                            Inicio</Link></li>
+                        <li>
+                            <Link href="/" style={{ display: 'flex', margin: '0 auto' }}>
+                                <span className="material-symbols-outlined"> house </span>
+                                Inicio
+                            </Link>
+                        </li>
                         <li>
                             <Link onClick={toggleMenu2} href="#">
                                 Services
@@ -121,15 +120,12 @@ const NavHeaderComponent = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="#" className=".Link a">
-                                <div className="cont">
-                                    <span className="material-symbols-outlined">
-                                        person
-                                    </span>
-                                </div>
-                                <div className="cont">
-                                    Adolfo
-                                </div>
+                            <Link href="#" className=".Link a" style={{ display: 'flex', margin: '0 auto' }}>
+                                <span className="material-symbols-outlined" >
+                                    person
+                                </span>
+                                Adolfo
+
                             </Link>
                             <div className="drop-menu-end">
                                 <ul>
@@ -137,14 +133,16 @@ const NavHeaderComponent = () => {
                                         <Link href="#">
                                             <span className="material-symbols-outlined">
                                                 manage_accounts
-                                            </span>| Perfil</Link>
+                                            </span>| Perfil
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="#">
+                                        <Link href="#" >
                                             <span className="material-symbols-outlined">
                                                 move_item
                                             </span>
-                                            |   Cerrar Sesión</Link>
+                                            |   Cerrar Sesión
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
