@@ -1,0 +1,187 @@
+.card-stipper-product {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stepper {
+  margin: 20px 30px;
+  box-shadow: 0 1px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+}
+
+.h3-stepper h3 {
+  font-size: 2.5rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.h4-subtitulo h4 {
+  font-size: 1.4rem;
+  /* display: flex; */
+  text-align: center;
+  justify-content: center;
+  margin: 1rem 0;
+  font-weight: 200;
+
+
+}
+
+.content-img-tienda-global {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  height: 286px;
+  overflow-x: auto;
+}
+
+.title-img-tienda {
+  background: #101418;
+  border-radius: 25px;
+  margin: 10px;
+  height: 230px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.title-img-tienda:hover {
+  /* Estilos cuando el mouse está sobre el elemento */
+  border: 2px solid #4D8B55;
+}
+
+.title-img-tienda.selected {
+  /* Estilos cuando el elemento está seleccionado */
+  border: 5px solid #4D8B55;
+}
+
+
+.img-tienda {
+  border-radius: 25px;
+  width: 278px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.title-img {
+  color: #fff;
+  padding-left: 5px;
+  font-size: 1rem;
+}
+
+.upload {
+  display: grid;
+  place-items: center;
+}
+
+.content-img-product {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 25px;
+  margin-top: 10px;
+  padding: 15px 10px;
+  height: 240px;
+  width: 500px;
+  overflow: auto;
+  border: 2px solid rgba(112, 112, 104, 0.333);
+}
+
+.content-img-product .img-producto {
+  height: 150px;
+  width: 105px;
+  object-fit: cover;
+  margin: 10px;
+}
+
+.pregunta{
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 50px 100px;
+
+}
+
+.content-card-success{
+  text-align: center;
+}
+
+.card-success h1 {
+  color: #88B04B;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.card-success p {
+  color: #404F5E;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-size:20px;
+  margin: 0;
+  text-align: center;
+}
+.card-success i {
+color: #9ABC66;
+font-size: 100px;
+line-height: 200px;
+}
+.card-success {
+background: white;
+padding: 40px;
+border-radius: 4px;
+box-shadow: 0 2px 3px #C8D0D8;
+display: inline-block;
+margin-top:20px;
+}
+
+@media (max-width: 600px) {
+  .img-tienda {
+    width: 157px;
+    height: 105px;
+  }
+
+  .title-img-tienda {
+    width: 100%;
+    height: 150px;
+  }
+
+  .content-img-tienda-global {
+    width: 320px;
+  }
+
+  .content-img-product {
+    width: 280px;
+  }
+}
+
+
+.step .section-content {
+	display: flex;
+	justify-content: center;
+ 	align-items: center;
+ 	flex-wrap: wrap;
+  border-radius: 25px;
+  margin-top: 30px;
+ 	height: 300px;
+  width: 600px;
+}
+
+.step #main {
+	background-image: url("https://images.unsplash.com/photo-1509785307050-d4066910ec1e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3c043b7f518066a42a3dc0cafea56253&auto=format&fit=crop&w=1228&q=80");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	text-align: center;
+}
+
+.step h1 {
+	color: white;
+	font-size: 2rem;
+	width: 60%;
+	margin: 0 auto;
+	border: 5px solid rgba(255,255,255, 0.45);
+	padding: 1rem 2rem;
+  backdrop-filter: blur(5px);
+}

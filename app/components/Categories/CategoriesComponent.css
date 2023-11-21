@@ -1,0 +1,106 @@
+
+/* ********************************** */
+/*             CATEGORIES             */
+/* ********************************** */
+
+.top-categories {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin-bottom: 3rem;
+}
+
+.container-categories {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 3rem;
+	padding: 0 15px;
+}
+
+.card-category {
+	height: 15rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 2rem;
+	gap: 2rem;
+}
+
+.category-liberica {
+	background-image: linear-gradient(#00000080, #00000080),
+		url('/images/cafe-liberica.jpg');
+	background-size: cover;
+	background-position: bottom;
+	background-repeat: no-repeat;
+}
+
+.category-robusta {
+	background-image: linear-gradient(#00000080, #00000080),
+		url('/images/cafe-robusta.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.category-arabica {
+	background-image: linear-gradient(#00000080, #00000080),
+		url('/images/cafe-arabica.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.card-category p {
+	font-size: 1.5rem;
+	color: #fff;
+	text-transform: capitalize;
+	position: relative;
+}
+
+.card-category p::after {
+	content: '';
+	width: 2.5rem;
+	height: 2px;
+	background-color: #fff;
+	position: absolute;
+	bottom: -1rem;
+	left: 50%;
+	transform: translate(-50%, 50%);
+}
+
+.card-category span {
+	font-size: 1rem;
+	color: #fff;
+	cursor: pointer;
+}
+
+.card-category span:hover {
+	color: var(--primary-color);
+}
+
+/* ********************************** */
+/*       MEDIA QUERIES -- 768px       */
+/* ********************************** */
+@media (max-width: 768px) {
+	.card-category {
+		height: 12rem;
+	}
+
+	.card-category p {
+		font-size: 2rem;
+		text-align: center;
+		line-height: 1;
+	}
+
+	.card-category span {
+		font-size: 1.4rem;
+	}
+}
+
+/* ********************************** */
+/*       MEDIA QUERIES -- 468px       */
+/* ********************************** */
+@media (max-width: 468px) {
+	
+}

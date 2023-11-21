@@ -1,0 +1,9 @@
+.title-venta{
+    display: grid;
+    justify-items: center;
+    text-align: center;
+}
+
+.title-venta h2{
+    font-size: 3rem;
+}

@@ -1,0 +1,91 @@
+/* ********************************** */
+/*             UTILIDADES             */
+/* ********************************** */
+.container {
+	max-width: 120rem;
+	margin: 0 auto;
+}
+/* ********************************** */
+/*              FEATURES              */
+/* ********************************** */
+.container-features {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 3rem;
+	padding: 2rem 10px;
+}
+
+.card-feature {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+
+	background-color: #fff;
+	border-radius: 1rem;
+	padding: 1rem 10px;
+}
+
+.card-feature .material-icons {
+	font-size: 1.5rem;
+	color: var(--primary-color);
+}
+
+.card-feature .material-symbols-outlined {
+	font-size: 1.5rem;
+	color: var(--primary-color);
+}
+.feature-content {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.feature-content span {
+	font-weight: 700;
+	font-size: 1rem;
+	color: var(--dark-color);
+}
+
+.feature-content p {
+	color: var(---secondary-text-color);
+	font-size: 0.8rem;
+	font-weight: 500;
+}
+/* ********************************** */
+/*       MEDIA QUERIES -- 768px       */
+/* ********************************** */
+@media (max-width: 768px) {
+    .container-features {
+		grid-template-columns: repeat(2, 1fr);
+		padding: 3rem 2rem;
+	}
+
+	.card-feature {
+		padding: 2rem;
+	}
+}
+
+/* ********************************** */
+/*       MEDIA QUERIES -- 468px       */
+/* ********************************** */
+@media (max-width: 468px) {
+	.card-feature {
+		flex-direction: column;
+		border-radius: 2rem;
+	}
+
+	.feature-content {
+		align-items: center;
+	}
+
+	.feature-content p {
+		font-size: 1.4rem;
+		text-align: center;
+	}
+
+	.feature-content span {
+		font-size: 1.6rem;
+		text-align: center;
+	}
+}

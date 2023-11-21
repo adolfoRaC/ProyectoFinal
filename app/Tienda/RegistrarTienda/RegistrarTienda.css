@@ -1,0 +1,60 @@
+.stepperContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    font-size: 1.5rem;
+    /* background: var(--background-color); */
+}
+
+.card-stepper {
+    background: var(--white-color);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 25px rgba(0, 0, 0, 0.2);
+}
+
+.msg-finalizar {
+    justify-self: center;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.mapa{
+    /* margin-top: 20px; */
+}
+
+@media (max-width: 620px) {
+    /* .img {
+      display: none; /* Hide the image 
+    } */
+    .mapa{
+        margin-top: 10px;
+    }
+  }
+
+.img{
+    display: grid;
+    place-items: center;
+    border-radius: 20px;
+    box-shadow: 0 1px 25px rgba(0, 0, 0, 0.2);
+}
+
+.img img{
+    object-fit: contain;
+}
+
+.input{
+    background: var(--primary-color);
+    /* margin-bottom: 5px; */
+}
+
+.btnNext{
+    background: var(--primary-color);
+    
+}
+
+.btnBefore{
+    background: var(--primary-color);
+}

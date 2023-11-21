@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.usuario-global-container{
+    font-size: 100%;
+}
+
+
+.usuario-global-container  {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* font-size: 1.4rem; */
+}
+
+.modal-content{
+    padding: 20px;
+}
+
+/* .modal-content input{
+    margin: 10px 5px;
+} */
