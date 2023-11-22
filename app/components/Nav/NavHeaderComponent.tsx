@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import './NavHeaderComponent.css'
+import Notificacion from '../Notificaciones/notificacion';
 
 const NavHeaderComponent = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
@@ -105,13 +106,16 @@ const NavHeaderComponent = () => {
                         <li>
                             <Link href="#">Tiendas</Link>
                         </li>
-                        <li>
-                            <Link href="#">Acerca de..</Link>
-                        </li>
+                        {/* <li>
+                            <Link href='#'>Acerca</Link>   
+                        </li> */}
                     </ul>
                 </div>
                 <div className="header-end">
                     <ul>
+                        <li>
+                        <Notificacion></Notificacion>
+                        </li>
                         <li>
                             <Link href="/Login" className='a'>
                                 <div>

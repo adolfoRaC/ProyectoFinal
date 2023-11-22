@@ -33,6 +33,7 @@ const config = {
           primary: {
             DEFAULT: "#4D8B55",
             foreground: "#fff",
+           
           },
           focus: "#4D8B55",
         },
