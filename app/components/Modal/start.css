@@ -1,0 +1,61 @@
+
+    .star-rating-group {
+      display: inline-flex;
+    }
+  
+    .star-rating-icon {
+      pointer-events: none;
+    }
+  
+    .star-rating-input {
+      position: absolute !important;
+      left: -9999px !important;
+    }
+  
+    .star-rating-label {
+      cursor: pointer;
+      padding: 0 0.1em;
+      font-size: 2rem;
+    }
+  
+    .star-rating-label--half {
+      padding-right: 0;
+      margin-right: -0.6em;
+      z-index: 2;
+    }
+  
+    .star-rating-icon--filled {
+      color: orange;
+    }
+  
+    .star-rating-icon--empty {
+      color: #eee;
+    }
+  
+    .star-rating-input--empty:checked + .star-rating-label .star-rating-icon--empty {
+      color: red;
+    }
+  
+    .star-rating-input:checked ~ .star-rating-label .star-rating-icon--filled {
+      color: #ddd;
+    }
+  
+    .star-rating-group:hover .star-rating-label .star-rating-icon--filled,
+    .star-rating-group:hover .star-rating-label--half .star-rating-icon--filled {
+      color: orange;
+    }
+  
+    .star-rating-input:hover ~ .star-rating-label .star-rating-icon--filled,
+    .star-rating-input:hover ~ .star-rating-label--half .star-rating-icon--filled {
+      color: #ddd;
+    }
+  
+    .star-rating-group:hover .star-rating-input--empty:not(:hover) + .star-rating-label .star-rating-icon--empty {
+      color: #eee;
+    }
+  
+    .star-rating-input--empty:hover + .star-rating-label .star-rating-icon--empty {
+      color: red;
+    }
+  
+  

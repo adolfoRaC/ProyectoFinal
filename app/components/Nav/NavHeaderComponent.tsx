@@ -4,6 +4,8 @@ import Link from 'next/link';
 import './NavHeaderComponent.css'
 import Notificacion from '../Notificaciones/notificacion';
 
+import styles from './tailwind.module.css'
+
 const NavHeaderComponent = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
 

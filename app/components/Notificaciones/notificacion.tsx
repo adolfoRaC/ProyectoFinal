@@ -7,22 +7,16 @@ export default function Notificacion() {
   return (
     <Popover placement="bottom">
       <PopoverTrigger>
-
-
-
-
         <Button
-          style={{width:50, height:50}}
+          style={{ width: 50, height: 50 }}
           radius="full"
           isIconOnly
           variant="light"
-          >
+        >
           <Badge content="9" shape="circle" color="danger">
             <NotificationIcon size={30} />
           </Badge>
         </Button>
-      
-
 
       </PopoverTrigger>
       <PopoverContent>

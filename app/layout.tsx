@@ -5,6 +5,7 @@ import './global.css'
 import FooterComponent from './components/Footer/FooterComponent'
 
 
+
 export const metadata: Metadata = {
   title: 'Pre-app Coffee',
   description: 'Página de pruebas',
@@ -25,9 +26,12 @@ export default function RootLayout({
       </head>
 
       <body >
+        <div>
+
         <NavHeaderComponent></NavHeaderComponent>
         {children}
         <FooterComponent></FooterComponent>
+        </div>
       </body>
     </html>
   )
