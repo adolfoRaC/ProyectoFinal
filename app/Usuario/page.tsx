@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableHeader,
@@ -30,11 +30,9 @@ import { capitalize } from "../components/TableCompuestos/utils";
 import { EyeFilledIcon } from "../components/PasswordInput/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../components/PasswordInput/EyeSlashFilledIcon";
 
+import CargaComponent from '../components/Carga/CargaComponent';
 
 import './usuarioGlobal.css'
-
-
-
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -47,6 +45,35 @@ const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 type User = typeof users[0];
 
 export default function page() {
+
+  // loading
+ /* const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simula una operación asincrónica, por ejemplo, una solicitud a una API
+    const fetchData = async () => {
+      try {
+        // Realiza la operación asincrónica aquí (puedes hacer una solicitud a una API, cargar datos, etc.)
+        // Simula una espera de 2 segundos
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Después de cargar los datos, actualiza el estado para indicar que la carga ha finalizado
+        setLoading(false);
+      } catch (error) {
+        // Manejo de errores si es necesario
+        console.error('Error al cargar datos:', error);
+        setLoading(false);
+      }
+    };
+
+    // Llama a la función de carga de datos
+    fetchData();
+  }, []); // El segundo argumento del useEffect es una matriz de dependencias, en este caso está vacía, lo que significa que solo se ejecutará una vez al montar el componente
+
+  // Renderiza un indicador de carga mientras los datos se están cargando
+  if (loading) {
+    return <div><CargaComponent></CargaComponent></div>;
+  }*/
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isVisible, setIsVisible] = React.useState(false);

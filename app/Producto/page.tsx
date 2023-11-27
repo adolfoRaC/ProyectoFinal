@@ -18,13 +18,14 @@ const page = () => {
         'https://m.media-amazon.com/images/I/71ot8Dno2UL._AC_SL1500_.jpg',
     ];
 
-    const settings = {
+    const settings = useState({
         dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-    };
+    });
+
 
 
     const handleImageClick = (index: number) => {
@@ -66,16 +67,7 @@ const page = () => {
         }
     };
 
-    // Nuevo estado para controlar el tamaño de la ventana
-    // const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
-    
-    const [windowWidth, setWindowWidth] = useState(0);
 
-    useEffect(() => {
-      if (typeof window !== 'undefined') {
-        setWindowWidth(window.innerWidth);
-      }
-    }, []);
     return (
         <>
             <div className='container-product'>
@@ -84,26 +76,27 @@ const page = () => {
 
                 <main>
                     <div className="container-img-princ">
-                        {windowWidth > 1024 ? (
-                            <div className="container-img">
+                        <div className='select-img'>
+                            <div className="container-img ">
                                 <Image src={selectedImage} alt="imagen-producto" width={400} height={400} />
                             </div>
-                        ) : (
+                        </div>
+                        <div className='slider-img'>
                             <Slider className='container-img' {...settings}>
                                 {images.map((img, index) => (
-                                    <div className="container-img" key={index} onClick={() => handleImageClick(index)}>
+                                    <div className="container-img " key={index} onClick={() => handleImageClick(index)}>
                                         <Image className='image-slider' src={img} alt={`small-image-${index + 1}`} width={400} height={400} />
                                     </div>
                                 ))}
                             </Slider>
-                        )}
+                        </div>
                         <div className="small-images">
                             {images.map((img, index) => (
                                 <div
                                     key={index}
                                     className="img-secondary"
                                     onClick={() => handleImageClick(index)}>
-                                    <Image src={img} alt={`small-image-${index + 1}`} className="small-image"  width={100} height={100}/>
+                                    <Image src={img} alt={`small-image-${index + 1}`} className="small-image" width={100} height={100} />
                                 </div>
                             ))}
                         </div>

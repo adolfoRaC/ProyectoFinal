@@ -27,7 +27,6 @@ export default function RootLayout({
 
       <body >
         <div>
-
         <NavHeaderComponent></NavHeaderComponent>
         {children}
         <FooterComponent></FooterComponent>

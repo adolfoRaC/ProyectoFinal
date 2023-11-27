@@ -1,0 +1,113 @@
+:root {
+	--primary-color: #4D8B55;
+	---secondary-text-color: #404040;
+	--background-color: #EBEBEB;
+	--dark-color: #151515;
+	--white-color: #fff;
+}
+  .container-not-found {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+  }
+  
+  #bean {
+    width: 170px;
+    height: 250px;
+    background: rgba(106,62,19,1);
+    background: radial-gradient(circle, rgb(119, 83, 46) 0%, rgba(106,62,19,1) 100%);  
+    border-radius: 50%;
+    -webkit-box-shadow: 12px 8px 15px 0px rgba(0,0,0,0.44); 
+    box-shadow: 12px 10px 15px 0px rgba(0,0,0,0.33);
+  } 
+  
+  .svg-NotFound { 
+    position: absolute;
+    top: 29px;
+    width: 300px; 
+    height: 330px; 
+    transform: rotate(36deg);
+  }
+  
+  .react-notFound { 
+    fill: #000; 
+  }
+  
+  .path-notFound { 
+    fill: #fff; 
+  }
+  
+  #static-base, #shadow-base {
+    fill: none;
+    stroke: rgb(68, 27, 0);
+      stroke-dasharray: 300;
+    stroke-linecap: round; 
+      stroke-width: 20;
+      mask: url(#mask);
+  }
+  
+  #base {
+      fill: none;
+    stroke: antiquewhite;
+      stroke-dasharray: 300;
+    stroke-linecap: round;
+      stroke-width: 20;
+      mask: url(#mask);
+      animation: draw 4s ease-in-out infinite
+  }
+  
+  #shadow-base {
+    fill: none;
+    stroke: #441b00;
+  }
+  
+  @keyframes draw {
+      0% { stroke-dashoffset: -300; }
+    50% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 300; }
+    100% { stroke-dashoffset: -300; }
+  }
+  
+  .content-msg-notfound{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .h2-NotFound {
+    align-items: center;
+    font-size: 80px;
+    font-weight: 600;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    margin-top: 20px;
+    color: var(--primary-color);
+    
+  }
+
+  .h2-NotFound-sub{
+    align-items: center;
+    font-size: 40px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    margin-top: 20px;
+    color: #402d20;
+  }
+
+  .btn-notFound{
+    width: 150px;  
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 25px;
+    color: var(--white-color);
+    background: var(--primary-color);
+  }
+
+  .btn-notFound:hover{
+    
+    background: var(--dark-color);
+  }
