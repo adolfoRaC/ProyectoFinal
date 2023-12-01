@@ -28,7 +28,7 @@ import CircularProgress, {
 
 import L, { Icon, LatLngExpression } from 'leaflet'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-import MarkerIcon from '../../../node_modules/leaflet/dist/images/marker-icon.png'
+import MarkerIcon from '../../../../node_modules/leaflet/dist/images/marker-icon.png'
 import 'leaflet/dist/leaflet.css'
 
 import './RegistrarTienda.css';

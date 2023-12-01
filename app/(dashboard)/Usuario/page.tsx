@@ -21,18 +21,19 @@ import {
   SortDescriptor,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox, Link
 } from "@nextui-org/react";
-import { PlusIcon } from "../components/TableCompuestos/PlusIcon";
-import { VerticalDotsIcon } from "../components/TableCompuestos/VerticalDotsIcon";
-import { ChevronDownIcon } from "../components/TableCompuestos/ChevronDownIcon";
-import { SearchIcon } from "../components/TableCompuestos/SearchIcon";
-import { columns, users, statusOptions } from "../components/TableCompuestos/data";
-import { capitalize } from "../components/TableCompuestos/utils";
-import { EyeFilledIcon } from "../components/PasswordInput/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "../components/PasswordInput/EyeSlashFilledIcon";
-
-import CargaComponent from '../components/Carga/CargaComponent';
-
+import { PlusIcon } from "../../components/TableCompuestos/PlusIcon";
+import { VerticalDotsIcon } from "../../components/TableCompuestos/VerticalDotsIcon";
+import { ChevronDownIcon } from "../../components/TableCompuestos/ChevronDownIcon";
+import { SearchIcon } from "../../components/TableCompuestos/SearchIcon";
+import { columns } from "../../components/TableCompuestos/data";
+import { capitalize } from "../../components/TableCompuestos/utils";
+import { EyeFilledIcon } from "../../components/PasswordInput/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "../../components/PasswordInput/EyeSlashFilledIcon";
+import axios from "axios";
+import CargaComponent from '../../components/Carga/CargaComponent';
+import { useSession, signOut } from "next-auth/react";
 import './usuarioGlobal.css'
+import IUsuario from '@/app/models/IUsuario';
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -40,40 +41,35 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   vacation: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["nombre","role", "actions"];
 
-type User = typeof users[0];
+
 
 export default function page() {
+  const { data: session, status } = useSession();
+  const [users, setUsers] = useState<IUsuario[]>([]);
 
-  // loading
- /* const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchUsers = async () => {
+    if(session?.user.token){
+    try {
+      const response = await axios.get<IUsuario[]>('http://localhost:8080/usuarios',{
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          "Authorization": `Bearer ${session.user.token}`
+        },
+      });
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error al obtener usuarios:', error);
+    }
+  }
+  };
 
-  useEffect(() => {
-    // Simula una operación asincrónica, por ejemplo, una solicitud a una API
-    const fetchData = async () => {
-      try {
-        // Realiza la operación asincrónica aquí (puedes hacer una solicitud a una API, cargar datos, etc.)
-        // Simula una espera de 2 segundos
-        await new Promise(resolve => setTimeout(resolve, 2000));
+  fetchUsers();
+}, [session]);
 
-        // Después de cargar los datos, actualiza el estado para indicar que la carga ha finalizado
-        setLoading(false);
-      } catch (error) {
-        // Manejo de errores si es necesario
-        console.error('Error al cargar datos:', error);
-        setLoading(false);
-      }
-    };
-
-    // Llama a la función de carga de datos
-    fetchData();
-  }, []); // El segundo argumento del useEffect es una matriz de dependencias, en este caso está vacía, lo que significa que solo se ejecutará una vez al montar el componente
-
-  // Renderiza un indicador de carga mientras los datos se están cargando
-  if (loading) {
-    return <div><CargaComponent></CargaComponent></div>;
-  }*/
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isVisible, setIsVisible] = React.useState(false);
@@ -104,17 +100,13 @@ export default function page() {
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
-      );
-    }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
+        user.nombre.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
 
+
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [users, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -126,42 +118,41 @@ export default function page() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+    return [...items].sort((a: IUsuario, b: IUsuario) => {
+      const first = a[sortDescriptor.column as keyof IUsuario];  // Sin conversión a número
+      const second = b[sortDescriptor.column as keyof IUsuario]; // Sin conversión a número
       const cmp = first < second ? -1 : first > second ? 1 : 0;
-
+  
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
+  
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback((user: IUsuario, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof IUsuario];
 
     switch (columnKey) {
-      case "name":
+      case "nombre":
         return (
           <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={`${user.name} ${user.apellidoPaterno} ${user.apellidoMaterno}`}
-
+            avatarProps={{ radius: "lg", src: '/images/user.png' }}
+            description={user.correo_Electronico}
+            name={`${user.nombre} ${user.apepat} ${user.apemat} `}
           >
-            {user.email}
+            {user.correo_Electronico}
           </User>
+        );
+        case "apepat":
+        return (
+          <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">{user.apepat}</p>
+        </div>
         );
       case "role":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            {/* <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p> */}
+            <p className="text-bold text-small capitalize">{user.rol.rol}</p>
           </div>
-        );
-      case "status":
-        return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
-          </Chip>
         );
       case "actions":
         return (
@@ -174,18 +165,16 @@ export default function page() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem>Ver</DropdownItem>
-                <DropdownItem onPress={onOpen} >
-                  Act
-                </DropdownItem>
+                <DropdownItem onPress={onOpen}>Act</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-
           </div>
         );
       default:
-        return cellValue;
+        return String(cellValue);
     }
-  }, []);
+  }, [onOpen]);
+  
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -232,27 +221,7 @@ export default function page() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
-                  Estatus
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+    
             <Dropdown>
               <DropdownTrigger className="sm:flex">
                 <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
@@ -300,7 +269,6 @@ export default function page() {
     );
   }, [
     filterValue,
-    statusFilter,
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,

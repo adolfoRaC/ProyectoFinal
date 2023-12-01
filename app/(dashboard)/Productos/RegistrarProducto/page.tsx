@@ -5,22 +5,21 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { styled } from '@mui/material/styles';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-
+import { Image } from '@nextui-org/react';
 
 import './RegistrarProducto.css'
+
 
 
 const steps = ['Datos del producto', 'Seleccionar tienda', 'Agregar imagen', 'Confirmar'];
@@ -74,7 +73,7 @@ const TextFieldGlobal = styled(TextField)({
 const InputGlobal = styled(Input)({
     '&:after': {
 
-        borderBottom: '2px solid #  '
+        borderBottom: '2px solid #4D8B55'
 
     }
 })
@@ -531,11 +530,22 @@ export default function HorizontalLinearStepper() {
                                                     </div>
                                                     <div>
 
+                                                        <FormControl sx={{ marginTop: 3 }} fullWidth variant="standard">
+                                                            <InputLabelGlobal htmlFor="stock">Stock</InputLabelGlobal>
+                                                            <InputGlobal
+                                                                id="stock"
+                                                                type='number'
+
+                                                            />
+                                                        </FormControl>
+                                                    </div>
+                                                    <div>
+
                                                         <AutocompleteGlobal
                                                             disablePortal
                                                             options={top100Films}
                                                             renderInput={(params) => <TextField {...params} label='Categorías' />}
-                                                            sx={{ marginTop: 7 }}
+                                                            sx={{ marginTop: 3 }}
                                                         />
 
                                                     </div>
@@ -554,17 +564,21 @@ export default function HorizontalLinearStepper() {
                                                         {itemData.map((item) => (
                                                             <div
                                                                 key={item.img}
-                                                                className={`title-img-tienda ${selectedItems.includes(item.title) ? 'selected' : ''}`}
+                                                                className={`card-img-tienda
+                                                                ${selectedItems.includes(item.title) ? 'selected' : ''}`}
                                                                 onClick={() => handleItemClick(item.title)}
                                                             >
-                                                                <img
-                                                                    className='img-tienda'
-                                                                    src={`${item.img}?w=248&fit=crop&auto=format`}
-                                                                    alt={item.title}
-                                                                />
+                                                                <div>
+
+                                                                    <img
+                                                                        className='img-tienda'
+                                                                        src={`${item.img}?w=248&fit=crop&auto=format`}
+                                                                        alt={item.title}
+                                                                    />
                                                                 <div className="title-img">
                                                                     <p>{item.title}</p>
                                                                     <span>by: {item.author}</span>
+                                                                </div>
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -616,7 +630,7 @@ export default function HorizontalLinearStepper() {
                                                     <h1>¿Esta seguro de registrar el producto?</h1>
                                                 </div>
                                             </section>
-                                            
+
                                             {/* <div className='pregunta'>
                                         ¿Esta seguro de registrar el producto?
                                     </div> */}

@@ -38,21 +38,22 @@
   overflow-x: auto;
 }
 
-.title-img-tienda {
+.card-img-tienda {
   background: #101418;
   border-radius: 25px;
   margin: 10px;
+  /* width: 180px; */
   height: 230px;
   cursor: pointer;
   border: 2px solid transparent;
 }
 
-.title-img-tienda:hover {
+.card-img-tienda:hover {
   /* Estilos cuando el mouse está sobre el elemento */
   border: 2px solid #4D8B55;
 }
 
-.title-img-tienda.selected {
+.card-img-tienda.selected {
   /* Estilos cuando el elemento está seleccionado */
   border: 5px solid #4D8B55;
 }
@@ -142,7 +143,7 @@ margin-top:20px;
     height: 105px;
   }
 
-  .title-img-tienda {
+  .card-img-tienda {
     width: 100%;
     height: 150px;
   }

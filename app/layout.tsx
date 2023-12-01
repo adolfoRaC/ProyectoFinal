@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 
-import NavHeaderComponent from './components/Nav/NavHeaderComponent'
 import './global.css'
-import FooterComponent from './components/Footer/FooterComponent'
 
 
 
@@ -27,9 +25,7 @@ export default function RootLayout({
 
       <body >
         <div>
-        <NavHeaderComponent></NavHeaderComponent>
-        {children}
-        <FooterComponent></FooterComponent>
+       {children}
         </div>
       </body>
     </html>

@@ -77,43 +77,6 @@
 	font-weight: 300;
 }
 
-.content input {
-	outline: none;
-	background: none;
-	border: none;
-	border-bottom: 2px solid #d2b495;
-	cursor: pointer;
-	padding: 0.5rem 0 1.2rem;
-	color: var(--dark-color);
-	display: block;
-	margin-bottom: 3rem;
-	margin-top: 2rem;
-	width: 100%;
-	font-family: inherit;
-}
-
-.content input::-webkit-input-placeholder {
-	color: #eee;
-}
-
-.content button {
-	border: none;
-	background-color: #000;
-	color: #fff;
-	text-transform: uppercase;
-	padding: 0.6rem 3rem;
-	border-radius: 2rem;
-	font-size: 0.8rem;
-	font-family: inherit;
-	cursor: pointer;
-	font-weight: 600;
-}
-
-.content button:hover {
-	background-color: var(--background-color);
-	color: var(--primary-color);
-}
-
 .copyright {
 	display: flex;
 	justify-content: space-between;

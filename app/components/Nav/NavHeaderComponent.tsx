@@ -72,16 +72,19 @@ const NavHeaderComponent = () => {
                         </li>
                         <li>
                             <Link onClick={toggleMenu2} href="#">
-                                Services
+                                Productos
                                 <span className="material-icons expand-more">expand_more</span>
                             </Link>
                             <div className={`drop-menu ${isMenuOpen2 ? 'show' : ''}`}>
                                 <ul>
                                     <li>
-                                        <Link href="#">Service 1 </Link>
+                                        <Link href="/Productos">Producto</Link>
                                     </li>
                                     <li>
-                                        <Link onClick={toggleMenu3} href="#">Service 2 <span className="material-icons expand-more">expand_more</span></Link>
+                                        <Link href="/Productos/RegistrarProducto">Agregar Producto</Link>
+                                    </li>
+                                    <li>
+                                        <Link onClick={toggleMenu3} href="#">Otros<span className="material-icons expand-more">expand_more</span></Link>
                                         <div className={`drop-menu ${isMenuOpen3 ? 'show' : ''}`}>
                                             <ul>
                                                 <li>
@@ -106,7 +109,7 @@ const NavHeaderComponent = () => {
                             <Link href="/Usuario">Usuarios</Link>
                         </li>
                         <li>
-                            <Link href="#">Tiendas</Link>
+                            <Link href="/Tienda">Tiendas</Link>
                         </li>
                         {/* <li>
                             <Link href='#'>Acerca</Link>   
@@ -116,7 +119,7 @@ const NavHeaderComponent = () => {
                 <div className="header-end">
                     <ul>
                         <li>
-                        <Notificacion></Notificacion>
+                            <Notificacion></Notificacion>
                         </li>
                         <li>
                             <Link href="/Login" className='a'>
@@ -136,7 +139,7 @@ const NavHeaderComponent = () => {
                             <div className="drop-menu-end">
                                 <ul>
                                     <li>
-                                        <Link href="#">
+                                        <Link href="/Perfil">
                                             <span className="material-symbols-outlined">
                                                 manage_accounts
                                             </span>| Perfil

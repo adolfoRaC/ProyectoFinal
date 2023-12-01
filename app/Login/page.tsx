@@ -1,8 +1,34 @@
 'use client'
 import { useState } from 'react'
 import './Login.css'
+import { IRegister } from '../models/IRegister';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import { useForm } from "react-hook-form";
+import { ILogin } from "../models/ILogin";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const page = () => {
+    const [error, SetError] = useState<string>("");
+    const { handleSubmit, register } = useForm<ILogin>();
+    const router = useRouter();
+  
+    const onSubmit = handleSubmit(async (formData) => {
+      const responseLogin = await signIn("credentials", {
+        user: formData.user,
+        pwd: formData.pwd,
+        redirect: false,
+      });
+  
+      if (responseLogin?.error) {
+        SetError("Usuario y/o password incorrectos");
+        return;
+      } else {
+        router.push("/Productos");
+      }
+    });
+
     const [isOpen, setIsOpen] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const Open = () => {
@@ -11,23 +37,76 @@ const page = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    const [registro, setRegistro] = useState<IRegister>({
+        id: 0,
+        nombre: '',
+        apepat: '',
+        apemat: '',
+        telefono: '',
+        usuario: '',
+        correo_Electronico: '',
+        pwd: '',
+        idRol: 1
+      });
+    
+
+      const handleRegistroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setRegistro({
+          ...registro,
+          [name]: value,
+        });
+      };
+    
+      const handleRegistroSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    
+        try {
+          // Realizar la solicitud POST utilizando axios
+          const response = await axios.post<IRegister>('http://localhost:8080/usuarios', registro);
+          
+          if (response.status === 201) {
+            // 201 significa creado (solicitud exitosa)
+            Open();
+            Swal.fire({
+                icon: 'success',
+                title: 'Registrado',
+                text: 'El usuario se registró exitosamente.',
+              });
+            console.log('Solicitud exitosa. Datos del servidor:', response.data);
+          } else {
+            console.log('Respuesta del servidor:', response.data);
+          }
+
+        } catch (error) {
+          // Manejar errores de la solicitud
+          console.error('Error en la solicitud:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al procesar la solicitud.',
+          });
+        }
+      };
     return (
-        <div className={`container ${isOpen ? ' ' : 'sign-up-mode'}`}>
+        <div className={`container-login ${isOpen ? ' ' : 'sign-up-mode'}`}>
             <div className={`forms-container ${isOpen ? 'login' : 'register'}`}>
                 <div className="signin-signup">
-                    <form action="#" className="sign-in-form">
+                    <form onSubmit={onSubmit} className="sign-in-form">
                         <h2 className="title">Iniciar sesión</h2>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Usuario" name="Usuario" id="Usuario" />
+                            <input type="text" placeholder="Usuario" {...register("user")} id="Usuario" />
                         </div>
                         <div className="input-field-pwd">
                             <span className="material-symbols-outlined">
                                 lock
                             </span>
                             <input
+                                {...register("pwd")}
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Contraseña"
                             />
@@ -41,45 +120,48 @@ const page = () => {
                                 </span>
                             </div>
                         </div>
-                        <input type="button" value="Iniciar Sesión" className="btn solid" />
+                        <input type="submit" value="Iniciar Sesión" className="btn solid" />
+                        <div className="row mt-3">
+          <h3 className="text-danger"> {error}</h3>
+        </div>
                     </form>
-                    <form action="#" className="sign-up-form">
+                    <form onSubmit={handleRegistroSubmit} className="sign-up-form">
                         <h2 className="title">Regístrate</h2>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 badge
                             </span>
-                            <input type="text" placeholder="Nombre" />
+                            <input type="text" placeholder="Nombre" name='nombre' value={registro.nombre} onChange={handleRegistroChange}/>
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Apellido paterno" />
+                            <input type="text" placeholder="Apellido paterno" name='apepat' value={registro.apepat} onChange={handleRegistroChange}/>
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Apellido materno" />
+                            <input type="text" placeholder="Apellido materno" name='apemat' value={registro.apemat} onChange={handleRegistroChange}/>
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 call
                             </span>
-                            <input type="text" placeholder="Telefono" />
+                            <input type="text" placeholder="Telefono" name='telefono' value={registro.telefono} onChange={handleRegistroChange}/>
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Usuario" />
+                            <input type="text" placeholder="Usuario" name='usuario' value={registro.usuario} onChange={handleRegistroChange}/>
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 alternate_email
                             </span>
-                            <input type="email" placeholder="Email" />
+                            <input type="text" placeholder="Email" name='correo_Electronico' value={registro.correo_Electronico} onChange={handleRegistroChange}/>
                         </div>
                         <div className="input-field-pwd">
                             <span className="material-symbols-outlined">
@@ -87,7 +169,8 @@ const page = () => {
                             </span>
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                placeholder="Contraseña"
+                                placeholder="Contraseña" name='pwd'
+                                value={registro.pwd} onChange={handleRegistroChange}
                             />
                             <div
                                 className="password-toggle"
@@ -99,6 +182,8 @@ const page = () => {
                                 </span>
                             </div>
                         </div>
+
+
                         <input type="submit" className="btn" value="Regístrate" />
                     </form>
                 </div>
