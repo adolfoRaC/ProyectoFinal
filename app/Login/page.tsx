@@ -25,7 +25,7 @@ const page = () => {
         SetError("Usuario y/o password incorrectos");
         return;
       } else {
-        router.push("/Productos");
+        router.push("/");
       }
     });
 
