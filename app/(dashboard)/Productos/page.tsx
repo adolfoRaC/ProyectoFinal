@@ -33,27 +33,27 @@ const page = () => {
   const [productos, setProductos] = useState<IProducto[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      if(session?.user.token){
-      try {
-        const response = await axios.get('http://localhost:8080/productos', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            "Authorization": `Bearer ${session.user.token}`
-          },
-        });
+      if (session?.user.token) {
+        try {
+          const response = await axios.get('http://localhost:8080/productos', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              "Authorization": `Bearer ${session.user.token}`
+            },
+          });
 
-        setProductos(response.data);
-      } catch (error) {
-        console.error('Errores', error);
+          setProductos(response.data);
+        } catch (error) {
+          console.error('Errores', error);
+        }
       }
-    }
     };
 
     fetchData();
   }, [session]);
 
-  const handleEliminarProducto = async (idProducto: number, nombreProducto: string )=> {
+  const handleEliminarProducto = async (idProducto: number, nombreProducto: string) => {
 
     const confirmacion = await Swal.fire({
       title: `¿Estás seguro de eliminar "${nombreProducto}"?`,
@@ -65,31 +65,36 @@ const page = () => {
       cancelButtonText: 'Cancelar',
     });
     if (confirmacion.isConfirmed) {
-      try {
-        // Realizar la solicitud DELETE utilizando axios
-        const response = await axios.delete(`http://localhost:8080/productos/${idProducto}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        });
+      if (session?.user.token) {
+        try {
+          // Realizar la solicitud DELETE utilizando axios
+          const response = await axios.delete(`http://localhost:8080/productos/${idProducto}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              "Authorization": `Bearer ${session.user.token}`
+            },
 
-        if (response.status === 200) {
-          // Eliminación exitosa, actualiza la lista de productos
-          setProductos((prevProductos) => prevProductos.filter(producto => producto.id !== idProducto));
-          // Mostrar una alerta de éxito
-          Swal.fire({
-            icon: 'success',
-            title: 'Producto eliminado',
-            text: `El producto "${nombreProducto}" ha sido eliminado exitosamente.`,
           });
-        } else {
-          console.log('Error en la eliminación del producto:', response.data);
+
+          if (response.status === 200) {
+            // Eliminación exitosa, actualiza la lista de productos
+            setProductos((prevProductos) => prevProductos.filter(producto => producto.id !== idProducto));
+            // Mostrar una alerta de éxito
+            Swal.fire({
+              icon: 'success',
+              title: 'Producto eliminado',
+              text: `El producto "${nombreProducto}" ha sido eliminado exitosamente.`,
+            });
+          } else {
+            console.log('Error en la eliminación del producto:', response.data);
+          }
+        } catch (error) {
+          // Manejar errores de la solicitud
+          console.error('Error en la solicitud:', error);
         }
-      } catch (error) {
-        // Manejar errores de la solicitud
-        console.error('Error en la solicitud:', error);
       }
+
     }
   };
   return (

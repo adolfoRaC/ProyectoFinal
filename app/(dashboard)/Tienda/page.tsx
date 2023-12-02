@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import axios from "axios";
 import { styled } from '@mui/material/styles';
-import ITienda from '../../models/ITienda'; 
+import ITienda from '../../models/ITienda';
 import '../../components/Tiedas/TiendaComponent.css'
 import Swal from 'sweetalert2';
 import { useSession, signOut } from "next-auth/react";
@@ -34,22 +34,22 @@ const page = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if(session?.user.token){
-      try {
-        const response = await axios.get<ITienda[]>('http://localhost:8080/tiendas', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            "Authorization": `Bearer ${session.user.token}`
-          },
-        });
+      if (session?.user.token) {
+        try {
+          const response = await axios.get<ITienda[]>('http://localhost:8080/tiendas', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              "Authorization": `Bearer ${session.user.token}`
+            },
+          });
 
-        setTiendas(response.data);
-      } catch (error) {
-        console.error('Error al obtener las tiendas:', error);
-      }
-    };
-  }
+          setTiendas(response.data);
+        } catch (error) {
+          console.error('Error al obtener las tiendas:', error);
+        }
+      };
+    }
     fetchData();
   }, [session]);
 
@@ -65,77 +65,80 @@ const page = () => {
     });
 
     if (confirmacion.isConfirmed) {
-      try {
-        const response = await axios.delete(`http://localhost:8080/tiendas/${idTienda}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        });
-
-        if (response.status === 200) {
-          setTiendas((prevTiendas) => prevTiendas.filter(tienda => tienda.id !== idTienda));
-          Swal.fire({
-            icon: 'success',
-            title: 'Tienda eliminada',
-            text: `La tienda "${nombreTienda}" ha sido eliminada exitosamente.`,
+      if (session?.user.token) {
+        try {
+          const response = await axios.delete(`http://localhost:8080/tiendas/${idTienda}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              "Authorization": `Bearer ${session.user.token}`
+            },
           });
-        } else {
-          console.log('Error en la eliminación de la tienda:', response.data);
+
+          if (response.status === 200) {
+            setTiendas((prevTiendas) => prevTiendas.filter(tienda => tienda.id !== idTienda));
+            Swal.fire({
+              icon: 'success',
+              title: 'Tienda eliminada',
+              text: `La tienda "${nombreTienda}" ha sido eliminada exitosamente.`,
+            });
+          } else {
+            console.log('Error en la eliminación de la tienda:', response.data);
+          }
+        } catch (error) {
+          console.error('Error en la solicitud:', error);
         }
-      } catch (error) {
-        console.error('Error en la solicitud:', error);
       }
     }
   };
 
-	return (
+  return (
     <section className="container tiendas">
-    <h1 className="heading-1">Tiendas</h1>
+      <h1 className="heading-1">Tiendas</h1>
 
-    <div className="container-tiendas">
-      {tiendas.map((tienda) => (
-        <div className="card-tienda" key={tienda.id}>
-          <div className="container-img">
-            <img src="/images/blog-1.jpg" alt={`Imagen ${tienda.nombre}`} />
-            <div className="button-group-tienda">
-            <BootstrapTooltip title="Eliminar" placement="left">
+      <div className="container-tiendas">
+        {tiendas.map((tienda) => (
+          <div className="card-tienda" key={tienda.id}>
+            <div className="container-img">
+              <img src="/images/blog-1.jpg" alt={`Imagen ${tienda.nombre}`} />
+              <div className="button-group-tienda">
+                <BootstrapTooltip title="Eliminar" placement="left">
 
-              <div className='span-content'  onClick={() => handleEliminarTienda(tienda.id, tienda.nombre)}
+                  <div className='span-content' onClick={() => handleEliminarTienda(tienda.id, tienda.nombre)}
                   >
-                <span className="material-symbols-outlined">
-                  delete
-                </span>
-              </div>
-              </BootstrapTooltip>
-              <div className='span-content'>
-                <span className="material-symbols-outlined">
-                  link
-                </span>
+                    <span className="material-symbols-outlined">
+                      delete
+                    </span>
+                  </div>
+                </BootstrapTooltip>
+                <div className='span-content'>
+                  <span className="material-symbols-outlined">
+                    link
+                  </span>
+                </div>
               </div>
             </div>
+            <div className="content-tienda">
+              <h2>{tienda.nombre}</h2>
+              <span>
+                <b>Correo: </b>{tienda.propietario.correo_Electronico} <br />
+                <b>Contacto: </b> {tienda.telefono}
+              </span>
+
+              <p>
+                <span>
+                  <b>Dirección: </b>
+                </span>
+                {tienda.direccion.calle}, {tienda.direccion.numero}<br />
+                {tienda.direccion.colonia}, {tienda.direccion.municipio.municipio}, {tienda.direccion.estado.estado}
+              </p>
+              <div className="btn-read-more">Leer más</div>
+            </div>
           </div>
-          <div className="content-tienda">
-            <h2>{tienda.nombre}</h2>
-            <span>
-              <b>Correo: </b>{tienda.propietario.correo_Electronico} <br />
-              <b>Contacto: </b> {tienda.telefono}
-            </span>
-            
-            <p>
-            <span>
-              <b>Dirección: </b>
-            </span>
-              {tienda.direccion.calle}, {tienda.direccion.numero}<br />
-              {tienda.direccion.colonia}, {tienda.direccion.municipio.municipio}, {tienda.direccion.estado.estado}
-            </p>
-            <div className="btn-read-more">Leer más</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-	)
+        ))}
+      </div>
+    </section>
+  )
 }
 
 export default page
