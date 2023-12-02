@@ -60,6 +60,8 @@
 
 
 .img-tienda {
+  @apply max-w-none;
+  /* all: initial; */
   border-radius: 25px;
   width: 278px;
   height: 150px;

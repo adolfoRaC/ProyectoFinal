@@ -5,6 +5,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 // import 'slick-carousel/slick/slick-theme.css';
 import './Producto.css'
+import { initialize } from 'next/dist/server/lib/render-server';
 
 const page = () => {
     const [selectedImage, setSelectedImage] = useState<string>(
@@ -72,7 +73,7 @@ const page = () => {
         <>
             <div className='container-product'>
 
-                <div className="container-title">Tablet</div>
+                <div className="container-title">Cafe caramel</div>
 
                 <main>
                     <div className="container-img-princ">
@@ -202,6 +203,221 @@ const page = () => {
                     </div>
                 </main>
             </div>
+            <section className='title-review-product'>
+                <h2>Reseñas</h2>
+            </section>
+            <section className='reviews-content'>
+                <div className='box-review'>
+                    <p>
+                        Lorem,explicabo mollitia Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt officia animi dolores totam impedit. Quo ea deleniti ad quasi repellendus veniam autem vel perspiciatis quisquam consectetur est hic, adipisci reiciendis. laboriosam incidunt ipsa! Quaerat, exercitationem adipisci quibusdam consectetur corporis nam pariatur. Ipsa deserunt eaque esse.
+                    </p>
+                    <div className='in-box'>
+                        <div className="bx-img">
+                            <img src="https://app.bipeek.com/storage/9411/2e4566fd829bcf9eb11ccdb5f252b02f.jpeg?v=1636378269" alt="" />
+                        </div>
+                        <div style={{all: 'initial'}} className="bxx-text">
+                            <h4>Adolfo Ramos Cruz</h4>
+                            <h5>Cafe molido</h5>
+                            <div className='ratings'>
+                                <div className="stars" >
+                                    <div className="star-rating-group">
+                                        <input className="star-rating-input star-rating-input--empty" name="rating2" id="rating2-0" value="0" type="radio" />
+                                        <label aria-label="0 stars" className="star-rating-label" htmlFor="rating2-0">&nbsp;</label>
+                                        <label aria-label="0.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-05"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-05" value="0.5" type="radio" />
+                                        <label aria-label="1 star" className="star-rating-label" htmlFor="rating2-10" ><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-10" value="1" type="radio" />
+                                        <label aria-label="1.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-15"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-15" value="1.5" type="radio" />
+                                        <label aria-label="2 stars" className="star-rating-label" htmlFor="rating2-20"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-20" value="2" type="radio" />
+                                        <label aria-label="2.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-25"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-25" value="2.5" type="radio" />
+                                        <label aria-label="3 stars" className="star-rating-label" htmlFor="rating2-30"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-30" value="3" type="radio" />
+                                        <label aria-label="3.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-35"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-35" value="3.5" type="radio" />
+                                        <label aria-label="4 stars" className="star-rating-label" htmlFor="rating2-40"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-40" value="4" type="radio" />
+                                        <label aria-label="4.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-45"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-45" value="4.5" type="radio" />
+                                        <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-50" value="5" type="radio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='box-review'>
+                    <p>
+                        Lorem,explicabo mollitia laboriosam incidunt ipsa! Quaerat, exercitationem adipisci quibusdam consectetur corporis nam pariatur. Ipsa deserunt eaque esse.
+                    </p>
+                    <div className='in-box'>
+                        <div className="bx-img">
+                            <img src="https://app.bipeek.com/storage/9411/2e4566fd829bcf9eb11ccdb5f252b02f.jpeg?v=1636378269" alt="" />
+                        </div>
+                        <div style={{all: 'initial'}} className="bxx-text">
+                            <h4>Adolfo Ramos Cruz</h4>
+                            <h5>Cafe molido</h5>
+                            <div className='ratings'>
+                                <div className="stars" >
+                                    <div className="star-rating-group">
+                                        <input className="star-rating-input star-rating-input--empty" name="rating2" id="rating2-0" value="0" type="radio" />
+                                        <label aria-label="0 stars" className="star-rating-label" htmlFor="rating2-0">&nbsp;</label>
+                                        <label aria-label="0.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-05"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-05" value="0.5" type="radio" />
+                                        <label aria-label="1 star" className="star-rating-label" htmlFor="rating2-10" ><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-10" value="1" type="radio" />
+                                        <label aria-label="1.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-15"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-15" value="1.5" type="radio" />
+                                        <label aria-label="2 stars" className="star-rating-label" htmlFor="rating2-20"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-20" value="2" type="radio" />
+                                        <label aria-label="2.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-25"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-25" value="2.5" type="radio" />
+                                        <label aria-label="3 stars" className="star-rating-label" htmlFor="rating2-30"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-30" value="3" type="radio" />
+                                        <label aria-label="3.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-35"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-35" value="3.5" type="radio" />
+                                        <label aria-label="4 stars" className="star-rating-label" htmlFor="rating2-40"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-40" value="4" type="radio" />
+                                        <label aria-label="4.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-45"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-45" value="4.5" type="radio" />
+                                        <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-50" value="5" type="radio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='box-review'>
+                    <p>
+                        Lorem,explicabo mollitia laboriosam incidunt ipsa! Quaerat, exercitationem adipisci quibusdam consectetur corporis nam pariatur. Ipsa deserunt eaque esse.
+                    </p>
+                    <div className='in-box'>
+                        <div className="bx-img">
+                            <img src="https://app.bipeek.com/storage/9411/2e4566fd829bcf9eb11ccdb5f252b02f.jpeg?v=1636378269" alt="" />
+                        </div>
+                        <div style={{all: 'initial'}} className="bxx-text">
+                            <h4>Adolfo Ramos Cruz</h4>
+                            <h5>Cafe molido</h5>
+                            <div className='ratings'>
+                                <div className="stars" >
+                                    <div className="star-rating-group">
+                                        <input className="star-rating-input star-rating-input--empty" name="rating2" id="rating2-0" value="0" type="radio" />
+                                        <label aria-label="0 stars" className="star-rating-label" htmlFor="rating2-0">&nbsp;</label>
+                                        <label aria-label="0.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-05"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-05" value="0.5" type="radio" />
+                                        <label aria-label="1 star" className="star-rating-label" htmlFor="rating2-10" ><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-10" value="1" type="radio" />
+                                        <label aria-label="1.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-15"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-15" value="1.5" type="radio" />
+                                        <label aria-label="2 stars" className="star-rating-label" htmlFor="rating2-20"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-20" value="2" type="radio" />
+                                        <label aria-label="2.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-25"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-25" value="2.5" type="radio" />
+                                        <label aria-label="3 stars" className="star-rating-label" htmlFor="rating2-30"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-30" value="3" type="radio" />
+                                        <label aria-label="3.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-35"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-35" value="3.5" type="radio" />
+                                        <label aria-label="4 stars" className="star-rating-label" htmlFor="rating2-40"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-40" value="4" type="radio" />
+                                        <label aria-label="4.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-45"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-45" value="4.5" type="radio" />
+                                        <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-50" value="5" type="radio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='box-review'>
+                    <p>
+                        Lorem,explicabo mollitia laboriosam incidunt ipsa! Quaerat, exercitationem adipisci quibusdam consectetur corporis nam pariatur. Ipsa deserunt eaque esse.
+                    </p>
+                    <div className='in-box'>
+                        <div className="bx-img">
+                            <img src="https://app.bipeek.com/storage/9411/2e4566fd829bcf9eb11ccdb5f252b02f.jpeg?v=1636378269" alt="" />
+                        </div>
+                        <div style={{all: 'initial'}} className="bxx-text">
+                            <h4>Adolfo Ramos Cruz</h4>
+                            <h5>Cafe molido</h5>
+                            <div className='ratings'>
+                                <div className="stars" >
+                                    <div className="star-rating-group">
+                                        <input className="star-rating-input star-rating-input--empty" name="rating2" id="rating2-0" value="0" type="radio" />
+                                        <label aria-label="0 stars" className="star-rating-label" htmlFor="rating2-0">&nbsp;</label>
+                                        <label aria-label="0.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-05"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-05" value="0.5" type="radio" />
+                                        <label aria-label="1 star" className="star-rating-label" htmlFor="rating2-10" ><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-10" value="1" type="radio" />
+                                        <label aria-label="1.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-15"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-15" value="1.5" type="radio" />
+                                        <label aria-label="2 stars" className="star-rating-label" htmlFor="rating2-20"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-20" value="2" type="radio" />
+                                        <label aria-label="2.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-25"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-25" value="2.5" type="radio" />
+                                        <label aria-label="3 stars" className="star-rating-label" htmlFor="rating2-30"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-30" value="3" type="radio" />
+                                        <label aria-label="3.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-35"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-35" value="3.5" type="radio" />
+                                        <label aria-label="4 stars" className="star-rating-label" htmlFor="rating2-40"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-40" value="4" type="radio" />
+                                        <label aria-label="4.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-45"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-45" value="4.5" type="radio" />
+                                        <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-50" value="5" type="radio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='box-review'>
+                    <p>
+                        Lorem,explicabo mollitia laboriosam incidunt ipsa! Quaerat, exercitationem adipisci quibusdam consectetur corporis nam pariatur. Ipsa deserunt eaque esse.
+                    </p>
+                    <div className='in-box'>
+                        <div className="bx-img">
+                            <img src="https://app.bipeek.com/storage/9411/2e4566fd829bcf9eb11ccdb5f252b02f.jpeg?v=1636378269" alt="" />
+                        </div>
+                        <div style={{all: 'initial'}} className="bxx-text">
+                            <h4>Adolfo Ramos Cruz</h4>
+                            <h5>Cafe molido</h5>
+                            <div className='ratings'>
+                                <div className="stars" >
+                                    <div className="star-rating-group">
+                                        <input className="star-rating-input star-rating-input--empty" name="rating2" id="rating2-0" value="0" type="radio" />
+                                        <label aria-label="0 stars" className="star-rating-label" htmlFor="rating2-0">&nbsp;</label>
+                                        <label aria-label="0.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-05"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-05" value="0.5" type="radio" />
+                                        <label aria-label="1 star" className="star-rating-label" htmlFor="rating2-10" ><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-10" value="1" type="radio" />
+                                        <label aria-label="1.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-15"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-15" value="1.5" type="radio" />
+                                        <label aria-label="2 stars" className="star-rating-label" htmlFor="rating2-20"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-20" value="2" type="radio" />
+                                        <label aria-label="2.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-25"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-25" value="2.5" type="radio" />
+                                        <label aria-label="3 stars" className="star-rating-label" htmlFor="rating2-30"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-30" value="3" type="radio" />
+                                        <label aria-label="3.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-35"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-35" value="3.5" type="radio" />
+                                        <label aria-label="4 stars" className="star-rating-label" htmlFor="rating2-40"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-40" value="4" type="radio" />
+                                        <label aria-label="4.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-45"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-45" value="4.5" type="radio" />
+                                        <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                                        <input className="star-rating-input" name="rating2" id="rating2-50" value="5" type="radio" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </>
     )
 }

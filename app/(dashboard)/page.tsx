@@ -4,7 +4,7 @@ import FeaturesComponent from '../components/Features/FeaturesComponent'
 import CategoriesComponent from '../components/Categories/CategoriesComponent'
 import ProductsComponent from '../components/Products/ProductsComponent'
 import TiendaComponent from '../components/Tiedas/TiendaComponent'
-const pageC = () => {
+const page = () => {
   return (
     <>
     <BannerComponent></BannerComponent>
@@ -18,4 +18,4 @@ const pageC = () => {
   )
 }
 
-export default pageC
+export default page

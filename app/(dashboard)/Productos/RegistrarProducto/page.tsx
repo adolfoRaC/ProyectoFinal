@@ -555,7 +555,7 @@ export default function HorizontalLinearStepper() {
                                     )}
                                     {activeStep === 1 && (
                                         <>
-                                            <Box sx={{ marginTop: 2 }}>
+                                            <Box sx={{ marginTop: 2 }} >
                                                 <div className='step'>
                                                     <div className='h4-subtitulo'>
                                                         <h4>¿A qué tienda desea asociarlo?</h4>
@@ -563,6 +563,7 @@ export default function HorizontalLinearStepper() {
                                                     <div className="content-img-tienda-global">
                                                         {itemData.map((item) => (
                                                             <div
+                                                            
                                                                 key={item.img}
                                                                 className={`card-img-tienda
                                                                 ${selectedItems.includes(item.title) ? 'selected' : ''}`}
@@ -571,6 +572,7 @@ export default function HorizontalLinearStepper() {
                                                                 <div>
 
                                                                     <img
+                                                                    //  style={{all: 'initial'}}
                                                                         className='img-tienda'
                                                                         src={`${item.img}?w=248&fit=crop&auto=format`}
                                                                         alt={item.title}
