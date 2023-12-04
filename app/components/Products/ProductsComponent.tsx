@@ -14,7 +14,7 @@ const ProductsComponent = () => {
       <div className="container-products">
         {/* Producto 1 */}
         <div className="card-product">
-          <div className="container-img">
+          <div className="container-img-pageProducts">
             <img src="/images/cafe-product-1.png" alt="Cafe Irish" />
             <div className="button-group">
               <div className='span-content'>
@@ -60,7 +60,7 @@ const ProductsComponent = () => {
         </div>
         {/* Producto 2  */}
         <div className="card-product">
-          <div className="container-img">
+          <div className="container-img-pageProducts">
             <img
               src="https://chedrauimx.vtexassets.com/arquivos/ids/21966437-800-auto?v=638350898081630000&width=800&height=auto&aspect=true"
               alt="Cafe incafe-ingles.jpg"
@@ -122,7 +122,7 @@ const ProductsComponent = () => {
         </div>
         {/* Producto 3 */}
         <div className="card-product">
-          <div className="container-img">
+          <div className="container-img-pageProducts">
             <img
               src="https://m.media-amazon.com/images/I/61oDqRIQc2L.__AC_SX300_SY300_QL70_ML2_.jpg"
               alt="Cafe Australiano"
@@ -183,7 +183,7 @@ const ProductsComponent = () => {
         </div>
         {/* Producto 4 */}
         <div className="card-product">
-          <div className="container-img">
+          <div className="container-img-pageProducts">
             <img src="https://ahcacao.com/web/image/product.product/562/image_1024/Caf%C3%A9%20de%20Chiapas%2C%20Conservation%20Trade%2C%20Grano%20Entero%2C%20450g?unique=07b71e3" alt="Cafe Helado" />
             <div className="button-group">
               <div className='span-content'>

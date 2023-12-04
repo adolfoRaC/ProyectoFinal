@@ -51,7 +51,7 @@
 	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-.container-img {
+.container-img-pageProducts {
 	position: relative;
 	display: flex; /* Añade display: flex para usar flexbox */
 	justify-content: center;
@@ -59,7 +59,7 @@
 }
 
 
-.top-products .container-img img {
+.top-products .container-img-pageProducts img {
 	width: 159.17px;
 	height: 159.17px;
 	object-fit: contain;
@@ -67,7 +67,7 @@
 
 }
 
-.container-img .discount {
+.container-img-pageProducts .discount {
 	position: absolute;
 	left: 0;
 	background-color: var(--primary-color);
@@ -463,13 +463,13 @@
 /*       MEDIA QUERIES -- 1130px       */
 /* ********************************** */
 @media (max-width: 1130px) {
-	.top-products .container-img {
+	.top-products .container-img-pageProducts {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-	.top-products .container-img img {
+	.top-products .container-img-pageProducts img {
 		width: 180.17px;
 		height: 180.17px;
 		object-fit: contain;
@@ -481,13 +481,13 @@
 /*       MEDIA QUERIES -- 768px       */
 /* ********************************** */
 @media (max-width: 768px) {
-	.top-products .container-img {
+	.top-products .container-img-pageProducts {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-	.top-products .container-img img {
+	.top-products .container-img-pageProducts img {
 		width: 180.17px;
 		height: 180.17px;
 		object-fit: contain;
@@ -511,13 +511,13 @@
 /*       MEDIA QUERIES -- 468px       */
 /* ********************************** */
 @media (max-width: 468px) {
-	.top-products .container-img {
+	.top-products .container-img-pageProducts {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-	.top-products .container-img img {
+	.top-products .container-img-pageProducts img {
 		width: 150.17px;
 		height: 150.17px;
 		object-fit: contain;
@@ -536,13 +536,13 @@
 }
 
 @media (max-width: 275px) {
-	.top-products .container-img {
+	.top-products .container-img-pageProducts {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-	.top-products .container-img img {
+	.top-products .container-img-pageProducts img {
 		width: 100.17px;
 		height: 100.17px;
 		object-fit: contain;

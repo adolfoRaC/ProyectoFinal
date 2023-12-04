@@ -1,13 +1,17 @@
 'use client'
 import { IProducto } from "@/app/models/IProducto";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useSession, signOut } from "next-auth/react";
 import '../../components/Products/ProductsComponent.css'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import axios from "axios";
 import { styled } from '@mui/material/styles';
 import Swal from 'sweetalert2';
-
+import Link from 'next/link';
+import { Button, Input } from "@nextui-org/react";
+import { SearchIcon } from "@/app/components/TableCompuestos/SearchIcon";
+import { Pagination } from "@nextui-org/react";
+import { PlusIcon } from "@/app/components/TableCompuestos/PlusIcon";
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
@@ -31,6 +35,9 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
 const page = () => {
   const { data: session, status } = useSession();
   const [productos, setProductos] = useState<IProducto[]>([]);
+
+  const [currentPage, setCurrentPage] = useState(0)
+  const [search, setSearch] = useState('');
   useEffect(() => {
     const fetchData = async () => {
       if (session?.user.token) {
@@ -51,6 +58,7 @@ const page = () => {
     };
 
     fetchData();
+    console.log(productos);
   }, [session]);
 
   const handleEliminarProducto = async (idProducto: number, nombreProducto: string) => {
@@ -97,15 +105,77 @@ const page = () => {
 
     }
   };
+
+  const filteredProductos = (): IProducto[] => {
+
+    if (search.length === 0)
+      return productos.slice(currentPage, currentPage + 8);
+
+    // Si hay algo en la caja de texto
+    const filtered = productos.filter(producto => producto.nombre.includes(search));
+    return filtered.slice(currentPage, currentPage + 8);
+  }
+  const totalPages = Math.ceil(
+    productos.filter((producto) => producto.nombre.includes(search)).length / 8
+  );
+
+  const nextPage = () => {
+    if (productos.filter(producto => producto.nombre.includes(search)).length > currentPage + 8)
+      setCurrentPage(currentPage + 8);
+  }
+
+  const prevPage = () => {
+    if (currentPage > 0)
+      setCurrentPage(currentPage - 8);
+  }
+
+  //Regresa a la página inicial
+  const onSearchChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(0);
+    setSearch(target.value);
+  }
   return (
     <>
       <section className="container top-products mt-4">
         <h1 className="heading-1">Productos</h1>
+
+        <div className="flex justify-between gap-3" style={{ padding: '0 20px' }}>
+          <div className="flex gap-3">
+            <Link href='/Productos/RegistrarProducto'>
+              <Button className="h-full" style={{ backgroundColor: "#4D8B55", color: "white" }}
+                endContent={<PlusIcon />}>
+                Agregar producto
+              </Button>
+            </Link>
+          </div>
+          <Input
+            type="text"
+            className="w-full  sm:max-w-[44%]"
+            placeholder="Buscar producto"
+            value={search}
+            onChange={onSearchChange}
+            startContent={<SearchIcon />}
+          />
+
+        </div>
+        <div className="flex w-full justify-center">
+
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={currentPage / 8 + 1}
+            total={totalPages}
+            onChange={(newPage) => setCurrentPage((newPage - 1) * 8)}
+          />
+        </div>
+
         <div className="container-products">
-          {productos.map((producto: IProducto) => (
+          {filteredProductos().map((producto: IProducto) => (
 
             <div className="card-product">
-              <div className="container-img">
+              <div className="container-img-pageProducts">
                 <img src={producto.imagenes[0].imagenURL} alt="Cafe Irish" />
                 <div className="button-group">
                   <BootstrapTooltip title="Actualizar" placement="left">
@@ -141,7 +211,7 @@ const page = () => {
                     <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
                   </div>
                 </div>
-                <h3>{producto.nombre}</h3>
+                <h3><Link href={`/DetallesProducto/${producto.id}`}>{producto.nombre}</Link></h3>
                 <BootstrapTooltip title="Añadir al carrito" placement="left">
                   <span className="add-cart">
                     <span className="material-symbols-outlined">
@@ -155,7 +225,18 @@ const page = () => {
           ))}
 
         </div>
+        <div className="flex w-full justify-center">
 
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={currentPage / 8 + 1}
+            total={totalPages}
+            onChange={(newPage) => setCurrentPage((newPage - 1) * 8)}
+          />
+        </div>
       </section>
     </>
   )

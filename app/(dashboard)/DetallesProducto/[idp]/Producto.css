@@ -91,8 +91,18 @@ main {
 
 }
 
+.visitas-product-page{
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.visitas-product-page .valor-view{
+	font-size: 1.4rem;
+}
+
 .container-price span {
-	font-size: 24px;
+	font-size: 2rem;
 	font-weight: 300;
 }
 
@@ -177,7 +187,7 @@ main {
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-	top: 3px;
+	top: 4px;
 	right: 7px;
 }
 
@@ -234,8 +244,8 @@ main {
 .title-description h4,
 .title-additional-information h4,
 .title-reviews h4 {
-	font-weight: 300;
-	color: #666;
+	font-weight: 600;
+	color: #1f1c1c;
 	font-size: 14px;
 }
 
@@ -396,18 +406,23 @@ main {
 	color: #ff0000;
 }
 
-.slider-img {}
+/* .slider-img {} */
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
 	.slider-img {
-		visibility: hidden;
-	}
-}
-
-@media screen and (max-width: 1024px) {
-	.select-img {
 		display: none;
 	}
+} */
+
+@media screen and (max-width: 1024px) {
+	/* .select-img {
+		display: none;
+	}
+
+	.slider-img{
+		display: block !important;
+		
+	} */
 
 	main {
 		display: block;
@@ -1019,7 +1034,11 @@ main {
 	font-size: 14px;
 }
 
-
+.container-details-product .stars{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 .star-rating-group {
 	display: inline-flex;
