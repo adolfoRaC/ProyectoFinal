@@ -26,7 +26,7 @@ const page = ({ params }: Props) => {
         const fetchData = async () => {
             if (session?.user.token) {
                 try {
-                    const response = await axios.get(`http://localhost:8080/productos/obtener/${params.idp}`, {
+                    const response = await axios.get(`http://localhost:8080/api/productos/${params.idp}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Access-Control-Allow-Origin': '*',

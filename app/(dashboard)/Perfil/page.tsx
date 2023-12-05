@@ -9,10 +9,12 @@ import {
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-
+import { useSession, signOut } from "next-auth/react";
+import Swal from 'sweetalert2';
 import { styled } from '@mui/material/styles';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import IUsuario from '@/app/models/IUsuario';
+import axios from 'axios';
 
 const ButtonGlobal = styled(Button)({
     background: '#4D8B55',
@@ -51,7 +53,7 @@ const InputLabelGlobal = styled(InputLabel)({
 })
 
 const InputPassword = styled(OutlinedInput)({
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline':{
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
         borderColor: '#4D8B55'
     }
 })
@@ -71,9 +73,76 @@ const AccountProfileDetails: React.FC = () => {
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+    };
 
+    const { data: session, status } = useSession();
+    const [userData, setUserData] = useState({
+        nombre: "",
+        apePaterno: "",
+        apeMaterno: "",
+        telefono: "",
+        usuario: "",
+        email: "",
+        password: "",
+    });
+    useEffect(() => {
+        const fetchData = async () => {
+            if (session?.user.token) {
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/usuarios/full/${session.user.id}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            "Authorization": `Bearer ${session.user.token}`
+                        },
+                    });
+                    console.log(response.data);
+                    setUserData(response.data);
+
+                } catch (error) {
+                    console.error('Errores', error);
+                }
+            }
+        };
+
+        fetchData();
+    }, [session]);
+
+    const handleUpdate = async () => {
+        if (session?.user.token) {
+            try {
+                const response = await axios.put(
+                    `http://localhost:8080/api/usuarios/${session.user.id}`,
+                    userData,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            Authorization: `Bearer ${session.user.token}`,
+                        },
+                    }
+                );
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Actualización exitosa',
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            } catch (error) {
+                console.error('Error al actualizar', error);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al actualizar',
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            }
+        }
 
     };
+
 
     return (
         <>

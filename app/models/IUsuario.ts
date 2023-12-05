@@ -5,6 +5,7 @@ interface IUsuario {
     apemat: string;
     correo_Electronico: string;
     telefono: string;
+    usuario: string;
     rol: {
       id: number;
       rol: string;

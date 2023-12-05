@@ -36,7 +36,7 @@ const page = () => {
     const fetchData = async () => {
       if (session?.user.token) {
         try {
-          const response = await axios.get<ITienda[]>('http://localhost:8080/tiendas', {
+          const response = await axios.get<ITienda[]>('http://localhost:8080/api/tiendas', {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',
@@ -67,7 +67,7 @@ const page = () => {
     if (confirmacion.isConfirmed) {
       if (session?.user.token) {
         try {
-          const response = await axios.delete(`http://localhost:8080/tiendas/${idTienda}`, {
+          const response = await axios.delete(`http://localhost:8080/api/tiendas/${idTienda}`, {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',

@@ -42,7 +42,7 @@ const page = () => {
     const fetchData = async () => {
       if (session?.user.token) {
         try {
-          const response = await axios.get('http://localhost:8080/productos', {
+          const response = await axios.get('http://localhost:8080/api/productos', {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',
@@ -76,7 +76,7 @@ const page = () => {
       if (session?.user.token) {
         try {
           // Realizar la solicitud DELETE utilizando axios
-          const response = await axios.delete(`http://localhost:8080/productos/${idProducto}`, {
+          const response = await axios.delete(`http://localhost:8080/api/productos/${idProducto}`, {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',

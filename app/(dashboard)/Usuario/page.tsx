@@ -53,7 +53,7 @@ useEffect(() => {
   const fetchUsers = async () => {
     if(session?.user.token){
     try {
-      const response = await axios.get<IUsuario[]>('http://localhost:8080/usuarios',{
+      const response = await axios.get<IUsuario[]>('http://localhost:8080/api/usuarios',{
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -116,7 +116,7 @@ useEffect(() => {
 
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
-
+  
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: IUsuario, b: IUsuario) => {
       const first = a[sortDescriptor.column as keyof IUsuario];  // Sin conversión a número

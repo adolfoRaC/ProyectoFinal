@@ -12,7 +12,7 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 const res = await fetch(
-                    `http://localhost:8080/usuarios/login`,
+                    `http://localhost:8080/api/usuarios/login`,
                     {
                         method: "POST",
                         body: JSON.stringify({
