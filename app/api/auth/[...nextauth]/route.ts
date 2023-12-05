@@ -23,28 +23,28 @@ const handler = NextAuth({
                     }
                 );
                 const user = await res.json();
+                console.log(user);
                 if (user.error) {
                     throw user;
                 }
                 else {
-                    console.log(user);
-                    const token = user.token;
-                    const updatedUser = {...user,token};
-                    return updatedUser;
+                    return user;
                 }
             }
         })
     ],
-    callbacks : {
-        async jwt({token, user}){
-            return {...token, ...user};
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) token.role = user.rol;
+            return { ...token, ...user };
         },
-        async session({session, token}){
+        async session({ session, token }) {
             session.user = token as any;
+            if (session.user) session.user.rol = token.role;
             return session;
         }
     },
-    pages:{
+    pages: {
         signIn: "/Login"
     }
 })
