@@ -1,6 +1,6 @@
 'use client'
 import { IProducto } from "@/app/models/IProducto";
-import { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { useSession, signOut } from "next-auth/react";
 import '../../components/Products/ProductsComponent.css'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
@@ -49,7 +49,7 @@ const page = () => {
               "Authorization": `Bearer ${session.user.token}`
             },
           });
-
+          console.log(response.data);
           setProductos(response.data);
         } catch (error) {
           console.error('Errores', error);
@@ -174,7 +174,7 @@ const page = () => {
         <div className="container-products">
           {filteredProductos().map((producto: IProducto) => (
 
-            <div className="card-product">
+            <div className="card-product" key={producto.id}>
               <div className="container-img-pageProducts">
                 <img src={producto.imagenes[0].imagenURL} alt="Cafe Irish" />
                 <div className="button-group">
@@ -197,18 +197,18 @@ const page = () => {
               <div className="content-card-product">
                 <div className="stars">
                   <div className="star-rating-group">
-                    <label aria-label="0 stars" className="star-rating-label" htmlFor="rating-0">&nbsp;</label>
-                    <label aria-label="0.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-05"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
-                    <label aria-label="1 star" className="star-rating-label" htmlFor="rating2-10" ><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
-                    <label aria-label="1.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-15"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
-                    <label aria-label="2 stars" className="star-rating-label" htmlFor="rating2-20"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
-                    <label aria-label="2.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-25"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
-                    <label aria-label="3 stars" className="star-rating-label" htmlFor="rating2-30"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
-                    <label aria-label="3.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-35"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
-                    <input className="star-rating-input" name="rating2" id="rating2-35" value="3.5" type="radio" checked disabled />
-                    <label aria-label="4 stars" className="star-rating-label" htmlFor="rating2-40"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
-                    <label aria-label="4.5 stars" className="star-rating-label star-rating-label--half" htmlFor="rating2-45"><i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i></label>
-                    <label aria-label="5 stars" className="star-rating-label" htmlFor="rating2-50"><i className="star-rating-icon star-rating-icon--filled fa fa-star"></i></label>
+                    {[...Array(10)].map((_, index) => {
+                      const starValue = (index + 1) / 2;
+                      const inputId = `rating2-${producto.id}-${index + 1}`; // Utilizar el ID del producto
+                      return (
+                        <React.Fragment key={index}>
+                          <label aria-label={`${starValue} stars`} className={`star-rating-label${starValue % 1 === 0 ? '' : ' star-rating-label--half'}`} htmlFor={inputId}>
+                            {starValue % 1 === 0 ? <i className="star-rating-icon star-rating-icon--filled fa fa-star"></i> : <i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i>}
+                          </label>
+                          <input className="star-rating-input" name={`rating2-${producto.id}`} id={inputId} value={starValue} type="radio" checked={starValue === producto?.evaluacion} disabled />
+                        </React.Fragment>
+                      );
+                    })}
                   </div>
                 </div>
                 <h3><Link href={`/DetallesProducto/${producto.id}`}>{producto.nombre}</Link></h3>

@@ -1,10 +1,10 @@
 
-export interface IRegister{
-    id: number;
+export interface IRegister {
+  id: number;
   nombre: string;
-  apepat: string;
-  apemat: string;
-  correo_Electronico: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  correoElectronico: string;
   telefono: string;
   usuario: string;
   pwd: string;

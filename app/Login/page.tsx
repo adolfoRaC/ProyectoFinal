@@ -13,20 +13,20 @@ const page = () => {
     const [error, SetError] = useState<string>("");
     const { handleSubmit, register } = useForm<ILogin>();
     const router = useRouter();
-  
+
     const onSubmit = handleSubmit(async (formData) => {
-      const responseLogin = await signIn("credentials", {
-        user: formData.user,
-        pwd: formData.pwd,
-        redirect: false,
-      });
-  
-      if (responseLogin?.error) {
-        SetError("Usuario y/o password incorrectos");
-        return;
-      } else {
-        router.push("/");
-      }
+        const responseLogin = await signIn("credentials", {
+            user: formData.user,
+            pwd: formData.pwd,
+            redirect: false,
+        });
+
+        if (responseLogin?.error) {
+            SetError("Usuario y/o password incorrectos");
+            return;
+        } else {
+            router.push("/");
+        }
     });
 
     const [isOpen, setIsOpen] = useState(true);
@@ -41,54 +41,66 @@ const page = () => {
     const [registro, setRegistro] = useState<IRegister>({
         id: 0,
         nombre: '',
-        apepat: '',
-        apemat: '',
+        apellidoPaterno: '',
+        apellidoMaterno: '',
         telefono: '',
         usuario: '',
-        correo_Electronico: '',
+        correoElectronico: '',
         pwd: '',
         idRol: 1
-      });
-    
+    });
 
-      const handleRegistroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handleRegistroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+         // Filtrar solo los dígitos para el campo de teléfono
+  let newValue = name === 'telefono' ? value.replace(/\D/g, '') : value;
+
+  // Limitar la longitud del campo de teléfono a 10 números
+  if (name === 'telefono' && newValue.length > 10) {
+    newValue = newValue.slice(0, 10);
+  }
         setRegistro({
-          ...registro,
-          [name]: value,
+            ...registro,
+            [name]: newValue,
         });
-      };
-    
-      const handleRegistroSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    };
+
+
+
+    const handleRegistroSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-    
+
         try {
-          // Realizar la solicitud POST utilizando axios
-          const response = await axios.post<IRegister>('http://localhost:8080/usuarios', registro);
-          
-          if (response.status === 201) {
-            // 201 significa creado (solicitud exitosa)
-            Open();
-            Swal.fire({
-                icon: 'success',
-                title: 'Registrado',
-                text: 'El usuario se registró exitosamente.',
-              });
-            console.log('Solicitud exitosa. Datos del servidor:', response.data);
-          } else {
-            console.log('Respuesta del servidor:', response.data);
-          }
+            // Realizar la solicitud POST utilizando axios
+            const response = await axios.post<IRegister>('http://localhost:8080/api/usuarios', registro);
+
+            if (response.status === 201) {
+                // 201 significa creado (solicitud exitosa)
+                Open();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registrado',
+                    text: 'El usuario se registró exitosamente.',
+                });
+                console.log('Solicitud exitosa. Datos del servidor:', response.data);
+            } else {
+                console.log('Respuesta del servidor:', response.data);
+            }
 
         } catch (error) {
-          // Manejar errores de la solicitud
-          console.error('Error en la solicitud:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un error al procesar la solicitud.',
-          });
+            // Manejar errores de la solicitud
+            console.error('Error en la solicitud:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al procesar la solicitud.',
+            });
         }
-      };
+    };
+
+
     return (
         <div className={`container-login ${isOpen ? ' ' : 'sign-up-mode'}`}>
             <div className={`forms-container ${isOpen ? 'login' : 'register'}`}>
@@ -122,8 +134,8 @@ const page = () => {
                         </div>
                         <input type="submit" value="Iniciar Sesión" className="btn solid" />
                         <div className="row mt-3">
-          <h3 className="text-danger"> {error}</h3>
-        </div>
+                            <h3 className="text-danger"> {error}</h3>
+                        </div>
                     </form>
                     <form onSubmit={handleRegistroSubmit} className="sign-up-form">
                         <h2 className="title">Regístrate</h2>
@@ -131,37 +143,37 @@ const page = () => {
                             <span className="material-symbols-outlined">
                                 badge
                             </span>
-                            <input type="text" placeholder="Nombre" name='nombre' value={registro.nombre} onChange={handleRegistroChange}/>
+                            <input type="text" placeholder="Nombre" name='nombre' value={registro.nombre} onChange={handleRegistroChange} />
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Apellido paterno" name='apepat' value={registro.apepat} onChange={handleRegistroChange}/>
+                            <input type="text" placeholder="Apellido paterno" name='apellidoPaterno' value={registro.apellidoPaterno} onChange={handleRegistroChange} />
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Apellido materno" name='apemat' value={registro.apemat} onChange={handleRegistroChange}/>
+                            <input type="text" placeholder="Apellido materno" name='apellidoMaterno' value={registro.apellidoMaterno} onChange={handleRegistroChange} />
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 call
                             </span>
-                            <input type="text" placeholder="Telefono" name='telefono' value={registro.telefono} onChange={handleRegistroChange}/>
+                            <input type="text" placeholder="Telefono" name='telefono' value={registro.telefono} onChange={handleRegistroChange} />
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 person
                             </span>
-                            <input type="text" placeholder="Usuario" name='usuario' value={registro.usuario} onChange={handleRegistroChange}/>
+                            <input type="text" placeholder="Usuario" name='usuario' value={registro.usuario} onChange={handleRegistroChange} />
                         </div>
                         <div className="input-field">
                             <span className="material-symbols-outlined">
                                 alternate_email
                             </span>
-                            <input type="text" placeholder="Email" name='correo_Electronico' value={registro.correo_Electronico} onChange={handleRegistroChange}/>
+                            <input type="text" placeholder="Email" name='correoElectronico' value={registro.correoElectronico} onChange={handleRegistroChange} />
                         </div>
                         <div className="input-field-pwd">
                             <span className="material-symbols-outlined">

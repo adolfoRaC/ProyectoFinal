@@ -60,6 +60,7 @@ useEffect(() => {
           "Authorization": `Bearer ${session.user.token}`
         },
       });
+      console.log(response.data);
       setUsers(response.data);
     } catch (error) {
       console.error('Error al obtener usuarios:', error);
@@ -136,16 +137,16 @@ useEffect(() => {
         return (
           <User
             avatarProps={{ radius: "lg", src: '/images/user.png' }}
-            description={user.correo_Electronico}
-            name={`${user.nombre} ${user.apepat} ${user.apemat} `}
+            description={user.correoElectronico}
+            name={`${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno} `}
           >
-            {user.correo_Electronico}
+            {user.correoElectronico}
           </User>
         );
-        case "apepat":
+        case "apellidoPaterno":
         return (
           <div className="flex flex-col">
-          <p className="text-bold text-small capitalize">{user.apepat}</p>
+          <p className="text-bold text-small capitalize">{user.apellidoPaterno}</p>
         </div>
         );
       case "role":

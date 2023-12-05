@@ -78,12 +78,13 @@ const AccountProfileDetails: React.FC = () => {
     const { data: session, status } = useSession();
     const [userData, setUserData] = useState({
         nombre: "",
-        apePaterno: "",
-        apeMaterno: "",
+        apellidoPaterno: "",
+        apellidoMaterno: "",
         telefono: "",
         usuario: "",
-        email: "",
-        password: "",
+        correoElectronico: "",
+        idRol: "",
+        pwd: "",
     });
     useEffect(() => {
         const fetchData = async () => {
@@ -109,41 +110,63 @@ const AccountProfileDetails: React.FC = () => {
     }, [session]);
 
     const handleUpdate = async () => {
-        if (session?.user.token) {
-            try {
-                const response = await axios.put(
-                    `http://localhost:8080/api/usuarios/${session.user.id}`,
-                    userData,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*',
-                            Authorization: `Bearer ${session.user.token}`,
-                        },
+        const confirmacion = await Swal.fire({
+            title: `¿Estás seguro de actualizar sus datos?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4D8B55',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Actualizar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (confirmacion.isConfirmed) {
+
+            if (session?.user.token) {
+                try {
+                    const response = await axios.put(
+                        `http://localhost:8080/api/usuarios/${session.user.id}`,
+                        userData,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                                Authorization: `Bearer ${session.user.token}`,
+                            },
+                        }
+                    );
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Actualización exitosa',
+                            
+                        });
                     }
-                );
+                } catch (error) {
+                    console.error('Error al actualizar', error);
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Actualización exitosa',
-                    showConfirmButton: false,
-                    timer: 2000,
-                });
-            } catch (error) {
-                console.error('Error al actualizar', error);
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al actualizar',
-                    showConfirmButton: false,
-                    timer: 2000,
-                });
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al actualizar',
+                    });
+                }
             }
         }
 
     };
 
-
+    const handleTelefonoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Filtrar solo los dígitos
+        let numericValue = e.target.value.replace(/\D/g, '');
+      
+        // Limitar la longitud del campo de teléfono a 10 números
+        if (numericValue.length > 10) {
+          numericValue = numericValue.slice(0, 10);
+        }
+      
+        // Actualizar el estado solo si el valor es numérico y no supera los 10 caracteres
+        setUserData({ ...userData, telefono: numericValue });
+      };
+      
     return (
         <>
 
@@ -196,19 +219,19 @@ const AccountProfileDetails: React.FC = () => {
                                                     gutterBottom
                                                     variant="h5"
                                                 >
-                                                    Adolfo Ramos Cruz
+                                                    {`${userData.nombre} ${userData.apellidoPaterno} ${userData.apellidoMaterno}`}
                                                 </Typography>
                                                 <Typography
                                                     color="text.secondary"
                                                     variant="body2"
                                                 >
-                                                    adolfo@gmail.com
+                                                    {userData.correoElectronico}
                                                 </Typography>
                                                 <Typography
                                                     color="text.secondary"
                                                     variant="body2"
                                                 >
-                                                    2315935858
+                                                    {userData.telefono}
                                                 </Typography>
                                             </Box>
                                         </CardContent>
@@ -224,97 +247,118 @@ const AccountProfileDetails: React.FC = () => {
                                     lg={8}
                                 >
                                     <Card>
-                                        <CardHeader subheader="Puede actualizar sus datos" title="Datos del usuario" />
-                                        <CardContent sx={{}}>
-                                            <Box sx={{}}>
-                                                <Grid style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 10 }} spacing={10}>
-                                                    <Grid xs={12} md={6} >
-                                                        <TextFieldGlobal
-                                                            fullWidth
-                                                            label="Nombre"
-                                                            name="nombre"
-                                                        />
-                                                    </Grid>
-                                                    <Grid xs={12} md={6}>
-                                                        <TextFieldGlobal
-                                                            fullWidth
-                                                            label="Apelliido paterno"
-                                                            name="apePaterno"
+                                        <form onSubmit={handleUpdate}>
+                                            <CardHeader subheader="Puede actualizar sus datos" title="Datos del usuario" />
 
-                                                            required
-
-                                                        />
-                                                    </Grid>
-                                                    <Grid xs={12} md={6}>
-                                                        <TextFieldGlobal
-                                                            fullWidth
-                                                            label="Apelliido materno"
-                                                            name="apeMaterno"
-
-                                                            required
-
-                                                        />
-                                                    </Grid>
-                                                    <Grid xs={12} md={6}>
-                                                        <TextFieldGlobal
-                                                            fullWidth
-                                                            label="Teléfono"
-                                                            name="telefono"
-
-                                                            required
-
-                                                        />
-                                                    </Grid>
-                                                    <Grid xs={12} md={6}>
-                                                        <TextFieldGlobal
-                                                            fullWidth
-                                                            label="Usuario"
-                                                            name="usuario"
-
-                                                            type="text"
-
-                                                        />
-                                                    </Grid>
-                                                    <Grid xs={12} md={6}>
-                                                        <TextFieldGlobal
-                                                            fullWidth
-                                                            label="Email"
-                                                            name="email"
-
-                                                            required
-
-                                                        />
-                                                    </Grid>
-                                                    <Grid xs={12} md={6}>
-                                                        <FormControl sx={{ width: '25ch' }} variant="outlined">
-                                                            <InputLabelGlobal htmlFor="outlined-adornment-password">Password</InputLabelGlobal>
-                                                            <InputPassword
-                                                                id="outlined-adornment-password"
-                                                                type={showPassword ? 'text' : 'password'}
-                                                                endAdornment={
-                                                                    <InputAdornment position="end">
-                                                                        <IconButton
-                                                                            aria-label="toggle password visibility"
-                                                                            onClick={handleClickShowPassword}
-                                                                            onMouseDown={handleMouseDownPassword}
-                                                                            edge="end"
-                                                                        >
-                                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                                        </IconButton>
-                                                                    </InputAdornment>
-                                                                }
-                                                                label="Contraseña"
+                                            <CardContent sx={{}}>
+                                                <Box sx={{}}>
+                                                    <Grid style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 10 }} spacing={10}>
+                                                        <Grid xs={12} md={6} >
+                                                            <input type="text" hidden value={userData.idRol} />
+                                                            <TextFieldGlobal
+                                                                fullWidth
+                                                                label="Nombre"
+                                                                name="nombre"
+                                                                value={userData.nombre}
+                                                                onChange={(e) => setUserData({ ...userData, nombre: e.target.value })}
+                                                                required
                                                             />
-                                                        </FormControl>
-                                                    </Grid>
-                                                </Grid>
-                                            </Box>
-                                        </CardContent>
-                                        <Divider />
-                                        <CardActions sx={{ justifyContent: 'flex-end' }}>
-                                            <Button type='submit' style={{ background: '#4D8B55' }} variant="contained">Guardar cambios</Button>
+                                                        </Grid>
+                                                        <Grid xs={12} md={6}>
+                                                            <TextFieldGlobal
+                                                                fullWidth
+                                                                label="Apelliido paterno"
+                                                                name="apellidoPaterno"
+                                                                value={userData.apellidoPaterno}
+                                                                onChange={(e) => setUserData({ ...userData, apellidoPaterno: e.target.value })}
 
-                                        </CardActions>
+                                                                required
+
+                                                            />
+                                                        </Grid>
+                                                        <Grid xs={12} md={6}>
+                                                            <TextFieldGlobal
+                                                                fullWidth
+                                                                label="Apelliido materno"
+                                                                name="apellidoMaternoMaterno"
+                                                                value={userData.apellidoMaterno}
+                                                                onChange={(e) => setUserData({ ...userData, apellidoMaterno: e.target.value })}
+
+                                                                required
+
+                                                            />
+                                                        </Grid>
+                                                        <Grid xs={12} md={6}>
+                                                            <TextFieldGlobal
+                                                                fullWidth
+                                                                label="Teléfono"
+                                                                name="telefono"
+                                                                value={userData.telefono}
+                                                                onChange={handleTelefonoChange}
+
+                                                                required
+
+                                                            />
+                                                        </Grid>
+                                                        <Grid xs={12} md={6}>
+                                                            <TextFieldGlobal
+                                                                fullWidth
+                                                                label="Usuario"
+                                                                name="usuario"
+                                                                value={userData.usuario}
+                                                                onChange={(e) => setUserData({ ...userData, usuario: e.target.value })}
+
+                                                                type="text"
+
+                                                            />
+                                                        </Grid>
+                                                        <Grid xs={12} md={6}>
+                                                            <TextFieldGlobal
+                                                                fullWidth
+                                                                label="Correo electrónico"
+                                                                name="correoElectronico"
+                                                                value={userData.correoElectronico}
+                                                                onChange={(e) => setUserData({ ...userData, correoElectronico: e.target.value })}
+
+                                                                required
+
+                                                            />
+                                                        </Grid>
+                                                        <Grid xs={12} md={6}>
+                                                            <FormControl sx={{ width: '25ch' }} variant="outlined">
+                                                                <InputLabelGlobal htmlFor="outlined-adornment-password">Password</InputLabelGlobal>
+                                                                <InputPassword
+                                                                    id="outlined-adornment-password"
+                                                                    type={showPassword ? 'text' : 'password'}
+                                                                    value={userData.pwd}
+                                                                    onChange={(e) => setUserData({ ...userData, pwd: e.target.value })}
+
+                                                                    endAdornment={
+                                                                        <InputAdornment position="end">
+                                                                            <IconButton
+                                                                                aria-label="toggle password visibility"
+                                                                                onClick={handleClickShowPassword}
+                                                                                onMouseDown={handleMouseDownPassword}
+                                                                                edge="end"
+                                                                            >
+                                                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                            </IconButton>
+                                                                        </InputAdornment>
+                                                                    }
+                                                                    label="Contraseña"
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Box>
+                                            </CardContent>
+                                            <Divider />
+                                            <CardActions sx={{ justifyContent: 'flex-end' }}>
+                                                <Button type='submit' style={{ background: '#4D8B55' }} variant="contained">Guardar cambios</Button>
+
+                                            </CardActions>
+                                        </form>
+
                                     </Card>
                                 </Grid>
                             </Grid>

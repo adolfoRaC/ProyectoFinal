@@ -1,0 +1,36 @@
+{filteredProductos().map((producto: IProducto) => (
+  <div className="card-product" key={producto.id}>
+    {/* ... Otro código ... */}
+    <div className="stars">
+      <div className="star-rating-group">
+        {[...Array(10)].map((_, index) => {
+          const starValue = (index + 1) / 2;
+          let roundedValue;
+
+          if (starValue >= 4.0 && starValue <= 4.2) {
+            roundedValue = 4.0;
+          } else if (starValue >= 4.3 && starValue <= 4.5) {
+            roundedValue = 4.5;
+          } else if (starValue >= 4.6 && starValue <= 4.7) {
+            roundedValue = 4.5;
+          } else if (starValue >= 4.8 && starValue <= 5.0) {
+            roundedValue = 5.0;
+          } else {
+            roundedValue = starValue;
+          }
+
+          const inputId = `rating2-${producto.id}-${index + 1}`; // Utilizar el ID del producto
+          return (
+            <React.Fragment key={index}>
+              <label aria-label={`${roundedValue} stars`} className={`star-rating-label${roundedValue % 1 === 0 ? '' : ' star-rating-label--half'}`} htmlFor={inputId}>
+                {roundedValue % 1 === 0 ? <i className="star-rating-icon star-rating-icon--filled fa fa-star"></i> : <i className="star-rating-icon star-rating-icon--filled fa fa-star-half"></i>}
+              </label>
+              <input className="star-rating-input" name={`rating2-${producto.id}`} id={inputId} value={roundedValue} type="radio" checked={roundedValue === producto?.evaluacion} disabled />
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
+    {/* ... Otro código ... */}
+  </div>
+))}
