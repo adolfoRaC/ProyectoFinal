@@ -46,7 +46,7 @@ const NavHeaderComponent = () => {
             </h1>
           </div>
 
-          <Link style={{ textDecoration: "none" }} href="./Carrito">
+          <Link style={{ textDecoration: "none" }} href="/Carrito">
             <div className="container-user">
               <span className="material-icons">shopping_cart</span>
               <div className="content-shopping-cart">

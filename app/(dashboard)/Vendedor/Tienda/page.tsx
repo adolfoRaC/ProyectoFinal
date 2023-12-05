@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import axios from "axios";
 import { styled } from '@mui/material/styles';
-import ITienda from '../../models/ITienda';
-import '../../components/Tiedas/TiendaComponent.css'
+import ITienda from '../../../models/ITienda';
+import '../../../components/Tiedas/TiendaComponent.css'
 import Swal from 'sweetalert2';
 import { useSession, signOut } from "next-auth/react";
 

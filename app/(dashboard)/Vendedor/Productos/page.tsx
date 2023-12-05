@@ -2,7 +2,7 @@
 import { IProducto } from "@/app/models/IProducto";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { useSession, signOut } from "next-auth/react";
-import '../../components/Products/ProductsComponent.css'
+import '../../../components/Products/ProductsComponent.css'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import axios from "axios";
 import { styled } from '@mui/material/styles';

@@ -110,16 +110,16 @@ const AccountProfileDetails: React.FC = () => {
     }, [session]);
 
     const handleUpdate = async () => {
-        const confirmacion = await Swal.fire({
-            title: `¿Estás seguro de actualizar sus datos?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#4D8B55',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, Actualizar',
-            cancelButtonText: 'Cancelar',
-        });
-        if (confirmacion.isConfirmed) {
+        // const confirmacion = await Swal.fire({
+        //     title: `¿Estás seguro de actualizar sus datos?`,
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#4D8B55',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Sí, Actualizar',
+        //     cancelButtonText: 'Cancelar',
+        // });
+        // if (confirmacion.isConfirmed) {
 
             if (session?.user.token) {
                 try {
@@ -134,13 +134,13 @@ const AccountProfileDetails: React.FC = () => {
                             },
                         }
                     );
-                    if (response.status === 200) {
+                  
                         Swal.fire({
                             icon: 'success',
                             title: 'Actualización exitosa',
                             
                         });
-                    }
+                    
                 } catch (error) {
                     console.error('Error al actualizar', error);
 
@@ -150,23 +150,23 @@ const AccountProfileDetails: React.FC = () => {
                     });
                 }
             }
-        }
+        // }
 
     };
 
     const handleTelefonoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Filtrar solo los dígitos
         let numericValue = e.target.value.replace(/\D/g, '');
-      
+
         // Limitar la longitud del campo de teléfono a 10 números
         if (numericValue.length > 10) {
-          numericValue = numericValue.slice(0, 10);
+            numericValue = numericValue.slice(0, 10);
         }
-      
+
         // Actualizar el estado solo si el valor es numérico y no supera los 10 caracteres
         setUserData({ ...userData, telefono: numericValue });
-      };
-      
+    };
+
     return (
         <>
 
