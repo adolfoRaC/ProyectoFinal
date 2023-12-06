@@ -178,7 +178,7 @@ const page = ({ params }: Props) => {
         console.log(JSON.stringify(reg));
         try {
             // if()
-            const response = await axios.post<ICarrito>('http://localhost:8080/api/carrito', registro,
+            const response = await axios.post<ICarrito>('http://localhost:8080/api/carrito', reg,
                 {
                     headers: {
                         'Content-Type': 'application/json',

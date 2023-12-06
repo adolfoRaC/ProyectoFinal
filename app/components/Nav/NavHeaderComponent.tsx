@@ -155,7 +155,7 @@ const NavHeaderComponent = () => {
                 <li>
                   <Link
                     href="#"
-                    className=".Link a"
+                    className="a"
                     style={{ display: "flex", margin: "0 auto" }}
                   >
                     <span className="material-symbols-outlined">person</span>

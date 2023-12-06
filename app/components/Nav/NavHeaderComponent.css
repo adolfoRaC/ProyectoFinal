@@ -455,14 +455,15 @@ input {
 
 .header-end {
 	display: flex;
-	width: 70px;
+	width: 200px;
 	justify-content: center;
 	text-transform: uppercase;
 	font-size: 0.9rem;
 	font-weight: 600;
 }
 
-@media (min-width: 1000px) {
+
+/* @media (min-width: 1000px) {
 	.header-end {
 		display: flex;
 		width: 70px;
@@ -476,7 +477,7 @@ input {
 		width: 90px;
 		justify-content: center;
 	}
-}
+} */
 
 /* @media (min-width: 468px) {
 	.header-end {
@@ -502,7 +503,7 @@ input {
 }
 
 .header-end>ul {
-	margin-right: 220px;
+	/* margin-right: 220px; */
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -540,7 +541,7 @@ input {
 	margin-top: -3px;
 	visibility: hidden;
 	position: absolute;
-	left: -84px;
+	left: -88px;
 	width: 200px;
 	padding-top: 1rem;
 	transition: all 0.2s;
@@ -559,7 +560,7 @@ input {
 
 @media (max-width: 768px) {
 	.header-end .drop-menu-end {
-		left: -64px;
+		left: -126px;
 	}
 }
 
@@ -568,7 +569,9 @@ input {
 		left: -92px;
 		width: 150px;
 	}
-
+	.header-end{
+		width: 140px;
+	}
 	.header-end .drop-menu-end:before {
 		padding-left: 120px;
 	}
@@ -650,7 +653,7 @@ input {
 
 @media only screen and (max-width:768px) {
 	.header-end>ul {
-		margin-right: 300px;
+		/* margin-right: 300px; */
 
 	}
 
@@ -676,11 +679,11 @@ input {
 	}
 }
 
-@media only screen and (max-width: 468px) {
-	.header-end>ul {
-		margin-right: 120px;
+/* @media (max-width: 468px) {
+	.header-end> {
+		width: 140px;
 	}
-}
+} */
 
 @media (min-width: 768px) {
 	.header .drop-menu:before {
