@@ -116,14 +116,15 @@ const NavHeaderComponent = () => {
             {status === "authenticated" ? (
               <>
                 {" "}
-                <li>
-                  <Link href="#">Empleados</Link>
-                </li>
+                
                 <li>
                   <Link href="/Usuario">Usuarios</Link>
                 </li>
                 <li>
                   <Link href="/Vendedor/Tienda">Tiendas</Link>
+                </li>
+                <li>
+                  <Link href="/Pedidos">Pedidos</Link>
                 </li>
               </>
             ) : (
