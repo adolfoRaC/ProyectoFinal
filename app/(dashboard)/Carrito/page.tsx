@@ -9,7 +9,12 @@ import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
 import './Carrito.css'
 import { ICarrito } from '@/app/models/ICarrito';
+import { ICarritoPedido } from '@/app/models/ICarritoPedido';
 import { IProducto } from '@/app/models/IProducto';
+import ITienda from '@/app/models/ITienda';
+import { IPedido } from '@/app/models/IPedido';
+import Swal from 'sweetalert2';
+import { fetchData } from 'next-auth/client/_utils';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -43,142 +48,231 @@ const ButtonGlobal = styled(Button)({
 })
 const page = () => {
     const { data: session, status } = useSession();
-    const [carrito, setCarrito] = useState<ICarrito[]>([]);
+    const [carrito, setCarrito] = useState<ICarritoPedido[]>([]);
+    const [tiendas, setTiendas] = useState<ITienda[]>([]);
+    const [totalTienda, setTotalTienda] = useState<number>(0);
+    const [detallesPedido, setDetallesPedido] = useState<{ precio: number, cantidad: number, idProducto: number }[]>([]);
+
     useEffect(() => {
         const fetchData = async () => {
             if (session?.user.token) {
                 try {
-                    const response = await axios.get<ICarrito[]>(`http://localhost:8080/api/carrito/1`, {
+                    const response = await axios.get<ICarrito[]>(`http://localhost:8080/api/carrito/${session.user.id}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Access-Control-Allow-Origin': '*',
                             "Authorization": `Bearer ${session.user.token}`
                         },
                     });
-                    console.log(response.data);
-                    // Para cada elemento en el carrito, realiza una solicitud adicional para obtener detalles del producto
-                    const detailedCart = await Promise.all(response.data.map(async (cartItem) => {
-                        const productDetailsResponse = await axios.get<IProducto>(`http://localhost:8080/api/productos/${cartItem.idProducto}`, {
+
+                    const tiendasPromises = response.data.map(async (cartItem) => {
+                        const productDetailsResponse = axios.get<IProducto>(`http://localhost:8080/api/productos/${cartItem.idProducto}`, {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Access-Control-Allow-Origin': '*',
                                 "Authorization": `Bearer ${session.user.token}`
                             },
                         });
+
+                        const tiendaResponse = axios.get<ITienda>(`http://localhost:8080/api/tiendas/${cartItem.idTienda}`, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                                "Authorization": `Bearer ${session.user.token}`
+                            },
+                        });
+
+                        const [productDetails, tienda] = await Promise.all([productDetailsResponse, tiendaResponse]);
+
                         return {
                             ...cartItem,
-                            productDetails: productDetailsResponse.data // asumiendo que hay una propiedad productDetails en ICarrito
+                            productDetails: productDetails.data,
+                            tienda: tienda.data
                         };
-                    }));
-                    console.log(detailedCart);
+                    });
+
+                    const detailedCart = await Promise.all(tiendasPromises);
                     setCarrito(detailedCart);
+                    const tiendasData = detailedCart.map(item => item.tienda);
+                    setTiendas(tiendasData);
+
                 } catch (error) {
-                    console.error('Error al obtener las tiendas:', error);
+                    console.error('Error al obtener los datos:', error);
                 }
-            };
-        }
+            }
+        };
+
         fetchData();
     }, [session]);
 
-    const obtenerFecha = () => {
-
-        const fecha = new Date();
-        return fecha.toISOString().split('T')[0]; // Formato: YYYY-MM-DD
-    };
-
-    const obtenerHora = () => {
-
-        const hora = new Date();
-        return hora.toTimeString().split(' ')[0]; // Formato: HH:MM:SS
-    };
-    const handlePedidoClick = async (cartItem: ICarrito) => {
-
-        const { idUsuario, idTienda, cantidad, productDetails } = cartItem;
-        const totalPrecio = cantidad * (productDetails ? productDetails.precio : 0);
-
-
-        const idEstatus = 3;
-        const horaActual = obtenerHora();
-        const fechaActual = obtenerFecha();
-
-        console.log('Datos del pedido:', { idUsuario, idTienda, cantidad, totalPrecio, horaActual, fechaActual });
-
+    const handleEliminarCarrito = async (idCarritoToDelete: string) => {
         try {
-            await axios.post('http://localhost:8080/api/pedidos', {
-                fechaActual,
-                horaActual,
-                idEstatus,
-                idTienda,
-                idUsuario
-            }, {
+            await axios.delete(`http://localhost:8080/api/carrito/${idCarritoToDelete}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
                     "Authorization": `Bearer ${session?.user.token}`
                 },
             });
+            setCarrito(prevCarrito => prevCarrito.filter(item => item.id !== idCarritoToDelete));
+            // Puedes realizar otras acciones después de eliminar el carrito, si es necesario
         } catch (error) {
-            console.error('Errores', error);
+            console.error('Error al eliminar el carrito:', error);
         }
     };
+
+
+    const handleCompraClick = async (productosDeTienda: any, idTienda: any) => {
+        const confirmacion = await Swal.fire({
+            icon: 'question',
+            title: '¿Confirmar pedido?',
+            text: '¿Estás seguro de que deseas realizar este pedido?',
+            showCancelButton: true,
+            confirmButtonColor: '#4D8B55',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, realizar pedido',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (confirmacion.isConfirmed) {
+            const pedido = {
+                pedido: {
+                    id: 0,
+                    fecha: null,
+                    hora: null,
+                    idEstatus: 3,
+                    idCliente: session?.user.id,
+                    idTienda: parseInt(idTienda),
+                },
+                detallesPedido: productosDeTienda.map((cartItem: any) => ({
+                    id: 0,
+                    precio: cartItem.productDetails?.precio * cartItem.cantidad || 0,
+                    cantidad: cartItem.cantidad,
+                    idProducto: cartItem.idProducto,
+                    idPedido: 0,
+                })),
+            };
+
+            try {
+                await axios.post<IPedido>('http://localhost:8080/api/pedidos', pedido, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        "Authorization": `Bearer ${session?.user.token}`
+                    },
+                });
+                const updatedCarrito = carrito.filter(item => !productosDeTienda.includes(item));
+                setCarrito(updatedCarrito);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Pedido realizado!',
+                    text: 'Tu pedido se ha realizado con éxito.',
+                });
+
+            } catch (error) {
+                console.error('Errores', error);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al realizar el pedido. Por favor, inténtalo de nuevo.',
+                });
+            }
+        }
+    };
+
+
+
+
+
+    const tiendasConProductos: { [idTienda: number]: ICarritoPedido[] } = {};
+    carrito.forEach((cartItem) => {
+        const idTienda = cartItem.idTienda;
+
+        if (!tiendasConProductos[idTienda]) {
+            tiendasConProductos[idTienda] = [];
+        }
+
+        tiendasConProductos[idTienda].push(cartItem);
+    });
+    const tiendasConTotales = Object.keys(tiendasConProductos).map((idTienda) => {
+        const productosDeTienda = tiendasConProductos[parseInt(idTienda, 10)];
+        const tienda = tiendas.find((t) => t.id === parseInt(idTienda, 10));
+
+        // Calcular el costo total de la tienda
+        const costoTotalTienda = productosDeTienda.reduce((total, producto) => {
+            const subtotalProducto = producto.cantidad * (producto.productDetails ? producto.productDetails.precio : 0);
+            return total + subtotalProducto;
+        }, 0);
+
+        return {
+            idTienda,
+            productosDeTienda,
+            tienda,
+            costoTotalTienda,
+        };
+    });
     return (
+
         <div>
             <div className="wrapper">
-                <main className='main'>
-                    <h2 className="titulo-principal">Carrito</h2>
-                    {carrito.map((cart) => (
+                <h2 className="titulo-carrito">Carrito</h2>
+                {Object.keys(tiendasConProductos).length === 0 ? (
+                    <h2 style={{height: '20rem', textAlign:'center', justifyContent:'center'}} className="titulo-principal">Sin productos en el carrito</h2>
+                ) : (
+                tiendasConTotales.map(({ idTienda, productosDeTienda, tienda, costoTotalTienda }) => (
+                    <main key={idTienda} className='main'>
                         <div className="contenedor-carrito">
-
-                            <div className="carrito-producto">
-                                <img className="carrito-producto-imagen" src={cart.productDetails?.imagenes[0].imagenURL} alt="Abrigo 01" />
-
-                                <div className="carrito-producto-titulo">
-                                    <small>Nombre</small>
-                                    <h3>{cart.productDetails?.nombre}</h3>
-                                </div>
-                                <div className="carrito-producto-cantidad">
-                                    <small>Cantidad</small>
-                                    <p>{cart.cantidad}</p>
-                                </div>
-                                <div className="carrito-producto-precio">
-                                    <small>Precio</small>
-                                    <p>${cart.productDetails?.precio}</p>
-                                </div>
-                                <div className="carrito-producto-subtotal">
-                                    <small>Subtotal</small>
-                                    <p>${cart.cantidad * (cart.productDetails ? cart.productDetails.precio : 0)}</p>
-
-                                </div>
-                                <ButtonGlobal variant="contained" onClick={() => handlePedidoClick(cart)}>
-                                    Hacer pedido
-                                </ButtonGlobal>
-                                <BootstrapTooltip title="Eliminar" placement="left">
-                                    <IconButton aria-label="delete" size="large">
-                                        <DeleteIcon color='error' fontSize="inherit" />
-                                    </IconButton>
-                                </BootstrapTooltip>
-
-                            </div>
-
-                            <div id="carrito-acciones" className="carrito-acciones">
-                                <div className="carrito-acciones-izquierda">
-
-                                    <button id="carrito-acciones-vaciar" className="carrito-acciones-vaciar">Vaciar carrito</button>
-                                </div>
-                                <div className="carrito-acciones-derecha">
-                                    <div className="carrito-acciones-total">
-                                        <p>Total:</p>
-                                        <p id="total">$3000</p>
+                            <h2 className="titulo-principal">Tienda: {tienda?.nombre}</h2>
+                        {productosDeTienda.map((cartItem) => (
+                                <div key={cartItem.id} className="carrito-producto">
+                                    <img className="carrito-producto-imagen" src={cartItem.productDetails?.imagenes[0].imagenURL} alt="Abrigo 01" />
+                                    <div className="carrito-producto-titulo">
+                                        <small>Nombre</small>
+                                        <h3>{cartItem.productDetails?.nombre}</h3>
                                     </div>
-                                    <button className="carrito-acciones-comprar">Comprar ahora</button>
-
+                                    <div className="carrito-producto-cantidad">
+                                        <small>Cantidad</small>
+                                        <p>{cartItem.cantidad}</p>
+                                    </div>
+                                    <div className="carrito-producto-precio">
+                                        <small>Precio</small>
+                                        <p>${cartItem.productDetails?.precio}</p>
+                                    </div>
+                                    <div className="carrito-producto-subtotal">
+                                        <small>Subtotal</small>
+                                        <p>${cartItem.cantidad * (cartItem.productDetails ? cartItem.productDetails?.precio : 0)}</p>
+                                    </div>
+                                    <BootstrapTooltip onClick={() => handleEliminarCarrito(cartItem.id ? cartItem.id : "")} title="Eliminar" placement="left">
+                                        <IconButton aria-label="delete" size="large">
+                                            <DeleteIcon color='error' fontSize="inherit" />
+                                        </IconButton>
+                                    </BootstrapTooltip>
                                 </div>
+                            ))}
+
+                        </div>
+
+                        <div id="carrito-acciones" className="carrito-acciones">
+
+                            <div className="carrito-acciones-derecha">
+                                <div className="carrito-acciones-total">
+                                    <p>Total:</p>
+                                    <p id="total">${costoTotalTienda}</p>
+                                </div>
+                                <button
+                                    onClick={() => handleCompraClick(productosDeTienda, idTienda)}
+                                    className="carrito-acciones-comprar">Comprar ahora</button>
                             </div>
                         </div>
-                    ))}
-                </main>
+                    </main>
+                    ))
+                    )}
+
             </div>
         </div>
+
     )
 }
 

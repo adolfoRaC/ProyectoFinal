@@ -1,0 +1,120 @@
+'use client'
+import React, { useEffect, useState } from 'react'
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete'
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
+import './Pedidos.css'
+import { useSession } from 'next-auth/react';
+import axios from "axios";
+import { IPedidoVendedor } from '@/app/models/IPedidoVendedor';
+
+// import 'bootstrap/dist/css/bootstrap.min.css';
+
+const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 16,
+    },
+}));
+const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+        color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: theme.palette.common.black,
+    },
+}));
+
+const ButtonGlobal = styled(Button)({
+    background: '#4D8B55',
+    '&:hover': {
+        backgroundColor: '#151515',
+        borderColor: '#151515',
+        boxShadow: 'none',
+    }
+})
+const page = () => {
+    const { data: session, status } = useSession();
+    const [pedidos, setPedidos] = useState<IPedidoVendedor[]>([])
+    useEffect(() => {
+        const fetchData = async () => {
+            if (session?.user.token) {
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/pedidos`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            "Authorization": `Bearer ${session.user.token}`
+                        },
+                    });
+
+                    console.log(response.data);
+                    setPedidos(response.data);
+                } catch (error) {
+                    console.error('Error al obtener los datos:', error);
+                }
+            }
+        };
+
+        fetchData();
+    }, [session]);
+
+    return (
+        <div>
+            <div className="wrapper">
+                <h2 className="titulo-carrito">Pedidos</h2>
+
+                <main className='main'>
+                    <div className="contenedor-carrito">
+                        {
+                            pedidos.map((pedido: IPedidoVendedor) => (
+
+
+                                <div className="carrito-producto">
+                                    <img
+                                        className="carrito-producto-imagen"
+                                        src={pedido.detallesPedido[0].producto.imagenes[0].imagenURL}
+                                        alt="Abrigo 01"
+                                        onError={(e) => console.error("Error cargando la imagen", e)}
+                                    />
+
+
+                                    <div className="carrito-producto-titulo">
+                                        <small>Cliente</small>
+                                        <h3>{`${pedido.cliente.nombre} ${pedido.cliente.apellidoPaterno} ${pedido.cliente.apellidoMaterno}`}</h3>
+                                    </div>
+                                    <div className="carrito-producto-cantidad">
+                                        <small>Cantidad</small>
+                                        <p>{pedido.detallesPedido[0].cantidad}</p>
+                                    </div>
+                                    <div className="carrito-producto-precio">
+                                        <small>Precio</small>
+                                        <p>$1000</p>
+                                    </div>
+                                    <div className="carrito-producto-subtotal">
+                                        <small>Subtotal</small>
+                                        <p>$1000</p>
+                                    </div>
+                                    <ButtonGlobal variant='contained'>
+                                        Finalizar pedido
+                                    </ButtonGlobal>
+                                </div>
+                            ))
+                        }
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    )
+}
+
+export default page

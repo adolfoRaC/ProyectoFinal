@@ -42,7 +42,7 @@ const NavHeaderComponent = () => {
           <div className="container-logo">
             <span className="material-icons">coffee</span>
             <h1 className="logo">
-              <Link href="/">Tec Coffee</Link>
+              <Link href="/">CoffeeMarket</Link>
             </h1>
           </div>
 
@@ -75,18 +75,23 @@ const NavHeaderComponent = () => {
               </Link>
             </li>
             <li>
-              <Link onClick={toggleMenu2} href="/Productos">
+              <Link onClick={toggleMenu2} href="#">
                 Productos
                 <span className="material-icons expand-more">expand_more</span>
               </Link>
               <div className={`drop-menu ${isMenuOpen2 ? "show" : ""}`}>
                 <ul>
                   <li>
-                    <Link href="/Productos">Producto</Link>
+                    <Link href="/Vendedor/Productos">Producto</Link>
                   </li>
                   <li>
-                    <Link href="/Vendedor/Productos/RegistrarProducto">
-                      Agregar Producto
+                    <Link href="/Vendedor/Pedidos">
+                      Pedidos
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/Vendedor/Ventas">
+                      Ventas
                     </Link>
                   </li>
                   <li>
@@ -124,7 +129,7 @@ const NavHeaderComponent = () => {
                   <Link href="/Vendedor/Tienda">Tiendas</Link>
                 </li>
                 <li>
-                  <Link href="/Pedidos">Pedidos</Link>
+                  <Link href="/Pedidos">Mis Pedidos</Link>
                 </li>
               </>
             ) : (

@@ -171,7 +171,7 @@ const page = () => {
   return (
     <>
       <section className="container top-products mt-4">
-        <h1 className="heading-1">Productos</h1>
+        <h1 className="heading-1" id="Productos">Productos</h1>
 
         <div className="flex justify-between gap-3" style={{ padding: '0 20px' }}>
           <Input

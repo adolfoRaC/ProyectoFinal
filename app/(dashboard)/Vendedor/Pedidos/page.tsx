@@ -21,56 +21,109 @@ import {
   SortDescriptor,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox, Link
 } from "@nextui-org/react";
-import { PlusIcon } from "../../components/TableCompuestos/PlusIcon";
-import { VerticalDotsIcon } from "../../components/TableCompuestos/VerticalDotsIcon";
-import { ChevronDownIcon } from "../../components/TableCompuestos/ChevronDownIcon";
-import { SearchIcon } from "../../components/TableCompuestos/SearchIcon";
-import { columns } from "../../components/TableCompuestos/data";
-import { capitalize } from "../../components/TableCompuestos/utils";
-import { EyeFilledIcon } from "../../components/PasswordInput/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "../../components/PasswordInput/EyeSlashFilledIcon";
+import { PlusIcon } from "../../../components/TableCompuestos/PlusIcon";
+import { VerticalDotsIcon } from "../../../components/TableCompuestos/VerticalDotsIcon";
+import { ChevronDownIcon } from "../../../components/TableCompuestos/ChevronDownIcon";
+import { SearchIcon } from "../../../components/TableCompuestos/SearchIcon";
+import { columns } from "./data";
+import { capitalize } from "../../../components/TableCompuestos/utils";
+import { EyeFilledIcon } from "../../../components/PasswordInput/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "../../../components/PasswordInput/EyeSlashFilledIcon";
 import axios from "axios";
-import CargaComponent from '../../components/Carga/CargaComponent';
+import CargaComponent from '../../../components/Carga/CargaComponent';
 import { useSession, signOut } from "next-auth/react";
 import './usuarioGlobal.css'
 import IUsuario from '@/app/models/IUsuario';
-
+import { IPedidoVendedor } from '@/app/models/IPedidoVendedor';
+import Swal from 'sweetalert2';
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
   paused: "danger",
   vacation: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["nombre","role", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["nombreProducto","cliente","estatus","cantidad" ,"precio","actions"];
 
 
 
 export default function page() {
   const { data: session, status } = useSession();
-  const [users, setUsers] = useState<IUsuario[]>([]);
+  
 
-useEffect(() => {
-  const fetchUsers = async () => {
-    if(session?.user.token){
+  const [pedidos, setPedidos] = useState<IPedidoVendedor[]>([])
+  useEffect(() => {
+      const fetchData = async () => {
+          if (session?.user.token) {
+              try {
+                  const response = await axios.get(`http://localhost:8080/api/pedidos`, {
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'Access-Control-Allow-Origin': '*',
+                          "Authorization": `Bearer ${session.user.token}`
+                      },
+                  });
+
+                  console.log(response.data);
+                  setPedidos(response.data);
+              } catch (error) {
+                  console.error('Error al obtener los datos:', error);
+              }
+          }
+      };
+
+      fetchData();
+  }, [session]);
+
+
+  const handlerFinalizarPedido = async (idPedido: number) => {
     try {
-      const response = await axios.get<IUsuario[]>('http://localhost:8080/api/usuarios',{
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          "Authorization": `Bearer ${session.user.token}`
-        },
+      // Mostrar alerta de confirmación
+      const confirmacion = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres finalizar este pedido?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#4D8B55',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, finalizar',
+        cancelButtonText: 'Cancelar',
       });
-      console.log(response.data);
-      setUsers(response.data);
+  
+      // Si el usuario confirma, realizar la solicitud
+      if (confirmacion.isConfirmed) {
+        await axios.put(
+          `http://localhost:8080/api/pedidos/${idPedido}?usuario=${session?.user.id}`,
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              Authorization: `Bearer ${session?.user.token}`,
+            },
+          }
+        );
+  
+        // Alerta de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Pedido finalizado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     } catch (error) {
-      console.error('Error al obtener usuarios:', error);
+      console.error('Error al finalizar pedido:', error);
+  
+      // Alerta de fallo
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al finalizar pedido',
+        text: 'Hubo un problema al intentar finalizar el pedido. Por favor, inténtalo nuevamente.',
+      });
     }
   }
-  };
-
-  fetchUsers();
-}, [session]);
-
+      
+   
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isVisible, setIsVisible] = React.useState(false);
@@ -97,17 +150,17 @@ useEffect(() => {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredPedidos = [...pedidos];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.nombre.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredPedidos = filteredPedidos.filter((pedido) =>
+        pedido.cliente.nombre.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
 
 
-    return filteredUsers;
-  }, [users, filterValue]);
+    return filteredPedidos;
+  }, [pedidos, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -119,9 +172,9 @@ useEffect(() => {
   }, [page, filteredItems, rowsPerPage]);
   
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: IUsuario, b: IUsuario) => {
-      const first = a[sortDescriptor.column as keyof IUsuario];  // Sin conversión a número
-      const second = b[sortDescriptor.column as keyof IUsuario]; // Sin conversión a número
+    return [...items].sort((a: IPedidoVendedor, b: IPedidoVendedor) => {
+      const first = a[sortDescriptor.column as keyof IPedidoVendedor];  // Sin conversión a número
+      const second = b[sortDescriptor.column as keyof IPedidoVendedor]; // Sin conversión a número
       const cmp = first < second ? -1 : first > second ? 1 : 0;
   
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -129,30 +182,56 @@ useEffect(() => {
   }, [sortDescriptor, items]);
   
 
-  const renderCell = React.useCallback((user: IUsuario, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof IUsuario];
+  const renderCell = React.useCallback((pedido: IPedidoVendedor, columnKey: React.Key) => {
+    const cellValue = pedido[columnKey as keyof IPedidoVendedor];
 
     switch (columnKey) {
-      case "nombre":
+      case "nombreProducto":
         return (
           <User
-            avatarProps={{ radius: "lg", src: '/images/user.png' }}
-            description={user.correoElectronico}
-            name={`${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno} `}
+            avatarProps={{ radius: "lg", src: `${pedido.detallesPedido[0].producto.imagenes[0].imagenURL}`}}
+            description={pedido.tienda.nombre}
+            name={`${pedido.detallesPedido[0].producto.nombre} `}
           >
-            {user.correoElectronico}
+            {pedido.tienda.nombre}
           </User>
         );
-        case "apellidoPaterno":
+        case "cliente":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{`${pedido.cliente.nombre} ${pedido.cliente.apellidoPaterno} ${pedido.cliente.apellidoMaterno}`}</p>
+            </div>
+          );  
+          case "correo":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{pedido.cliente.correoElectronico}</p>
+            </div>
+          );  
+          case "telefono":
+            return (
+              <div className="flex flex-col">
+                <p className="text-bold text-small capitalize">{pedido.cliente.telefono}</p>
+              </div>
+            );  
+        case "cantidad":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{pedido.detallesPedido[0].cantidad}</p>
+            </div>
+          );  
+       
+        case "precio":
         return (
           <div className="flex flex-col">
-          <p className="text-bold text-small capitalize">{user.apellidoPaterno}</p>
-        </div>
+            <p className="text-bold text-small capitalize">${pedido.detallesPedido[0].precio}</p>
+          </div>
         );
-      case "role":
+        
+      case "estatus":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{user.rol.rol}</p>
+            <p className="text-bold text-small capitalize">{pedido.estatus.estatus}</p>
           </div>
         );
       case "actions":
@@ -165,8 +244,8 @@ useEffect(() => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>Ver</DropdownItem>
-                <DropdownItem onPress={onOpen}>Act</DropdownItem>
+                <DropdownItem onClick={() => handlerFinalizarPedido(pedido.id)}>Finalizar pedido</DropdownItem>
+                {/* <DropdownItem>Cancelar pedido</DropdownItem> */}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -253,7 +332,7 @@ useEffect(() => {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total de usuarios: {users.length} </span>
+          <span className="text-default-400 text-small">Total de usuarios: {pedidos.length} </span>
           <label className="flex items-center text-default-400 text-small">
             Filas de la tabla:
             <select
@@ -273,7 +352,7 @@ useEffect(() => {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    pedidos.length,
     hasSearchFilter,
   ]);
 
@@ -336,7 +415,7 @@ useEffect(() => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={"Usuario no encontrado"} items={sortedItems}>
+        <TableBody emptyContent={"Pedido no encontrado"} items={sortedItems}>
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -344,62 +423,7 @@ useEffect(() => {
           )}
         </TableBody>
       </Table>
-      <Modal
-        size={"5xl"}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="top-center"
-        backdrop="blur"
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>Actualizar datos</ModalHeader>
-              <div className="modal-content">
-
-                <div className="flex p-4 gap-2">
-                  <Input label="Nombre" placeholder="Ingrese su nombre" />
-                  <Input label="Apellido paterno" placeholder="Ingrese su apellido paterno" />
-                  <Input label="Apellido materno" placeholder="Ingrese su apellido materno" />
-
-                </div>
-                <div className="flex p-4 gap-2">
-                  <Input label="Teléfono" placeholder="Ingrese su teléfono" />
-                  <Input label="Email" placeholder="Ingrese su Email" />
-                  <Input label="usuario" placeholder="Ingrese su usuario" />
-                </div>
-                <div className="flex p-4 gap-2">
-                  <Input
-                    label="Contraseña"
-
-                    placeholder="Ingrese su contraseña"
-                    endContent={
-                      <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                        {isVisible ? (
-                          <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
-                    }
-                    type={isVisible ? "text" : "password"}
-                    className="max-w-xs"
-                  />
-                </div>
-              </div>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancelar
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Actualizar
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-
+   
 
 
 

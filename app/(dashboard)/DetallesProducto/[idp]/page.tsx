@@ -15,6 +15,7 @@ import { IDisponibilidad } from '@/app/models/IDisponibilidad';
 import Swal from 'sweetalert2';
 import { ICarrito } from '@/app/models/ICarrito';
 import { json } from 'stream/consumers';
+import { IVisita } from '@/app/models/IVisita';
 export interface Props {
     params: { idp: number }
 }
@@ -57,7 +58,7 @@ const page = ({ params }: Props) => {
                             "Authorization": `Bearer ${session.user.token}`
                         },
                     });
-                    console.log(responsedisp.data);
+                    // console.log(responsedisp.data);
                     setStocks(responsedisp.data);
 
                     const tiendasData = await Promise.all(responsedisp.data.map((item: IDisponibilidad) => {
@@ -72,7 +73,43 @@ const page = ({ params }: Props) => {
 
                     const tiendasDataFormatted = tiendasData.map((response) => response.data);
                     setTiendas(tiendasDataFormatted);
+                    const localStorageKey = 'solicitudRealizada';
 
+                    // Verifica si la solicitud ya se ha realizado antes.
+                    const solicitudYaRealizada = localStorage.getItem(localStorageKey);
+
+                    if (!solicitudYaRealizada) {
+                        // Realizar solicitud de visitas solo si no se ha realizado antes
+                        const fechaActual = new Date();
+                        const fechaFormateada = fechaActual.toISOString().split('T')[0];
+                        const horaFormateada = fechaActual.toLocaleTimeString();
+
+                        const reg = {
+                            idProducto: response.data.id,
+                            idUsuario: session?.user.id,
+                            fecha: fechaFormateada,
+                            hora: horaFormateada,
+                        };
+
+                        try {
+                            await axios.post<IVisita>('http://localhost:8080/api/visitas', reg, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin': '*',
+                                    Authorization: `Bearer ${session?.user.token}`,
+                                },
+                            });
+
+                            console.log('Solicitud de visita realizada con éxito.');
+                            // Almacena un indicador en localStorage para recordar que la solicitud ya se realizó.
+                            localStorage.setItem(localStorageKey, 'true');
+                        } catch (error) {
+                            console.error('Error al realizar la solicitud de visita:', error);
+                            // Puedes manejar errores aquí.
+                        }
+                    } else {
+                        console.log('La solicitud ya se realizó antes, no es necesario hacerlo de nuevo.');
+                    }
                 } catch (error) {
                     console.error('Errores', error);
                 }
@@ -175,7 +212,7 @@ const page = ({ params }: Props) => {
         const formData = new FormData(e.currentTarget);
 
         let reg = { cantidad: formData.get("cantidad"), idProducto: producto?.id, idTienda: formData.get("idTienda"), idUsuario: formData.get("idUsuario") };
-        console.log(JSON.stringify(reg));
+        // console.log(JSON.stringify(reg));
         try {
             // if()
             const response = await axios.post<ICarrito>('http://localhost:8080/api/carrito', reg,
@@ -187,15 +224,15 @@ const page = ({ params }: Props) => {
                     },
                 });
 
-        
 
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: 'El producto añadido al carrito.',
-                });
-             
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'El producto añadido al carrito.',
+            });
+
 
         } catch (error) {
             // Manejar errores de la solicitud
@@ -232,6 +269,10 @@ const page = ({ params }: Props) => {
         };
     }, []);
 
+
+
+
+
     if (!producto) {
         return <div style={{ height: '30rem' }}>
             <CargaComponent />
@@ -257,7 +298,7 @@ const page = ({ params }: Props) => {
                             </div>
                         )}
                         <div className='select-img' style={{ display: !isSliderVisible ? 'block' : 'none' }}>
-                            <div className="container-img ">
+                            <div className="container-img">
                                 <Image src={selectedImage} alt="imagen-producto" width={400} height={400} />
                             </div>
                         </div>

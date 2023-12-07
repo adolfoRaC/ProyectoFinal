@@ -1,19 +1,20 @@
-export interface idPedido {
+export interface IPedido {
 
     pedido: {
-        id: 0,
-        fecha: null,
-        hora: null,
-        idEstatus: 0,
-        idCliente: 0
+        id: number,
+        fecha: string,
+        hora: string,
+        idEstatus: number,
+        idTienda: number
+        idCliente: number
     },
     detallesPedido: [
         {
-            id: 0,
-            precio: 0,
-            cantidad: 0,
-            idProducto: 0,
-            idPedido: null,
+            id: number,
+            precio: number,
+            cantidad: number,
+            idProducto: number,
+            idPedido: number,
         }
     ]
 

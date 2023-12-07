@@ -6,7 +6,7 @@ const BannerComponent = () => {
     <div className="content-banner">
         <p>Café Delicioso</p>
         <h2>100% Natural <br />Café Fresco</h2>
-        <Link href="#">Comprar ahora</Link>
+        <Link href="#Productos">Comprar ahora</Link>
     </div>
 </section>
   )
